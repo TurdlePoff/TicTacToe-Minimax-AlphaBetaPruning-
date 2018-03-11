@@ -1,0 +1,36 @@
+Ex6 - Description
+
+- A program trying out the many cctype library functions
+
+//Test for alphanumeric
+- Tests if variables have a letter, a number or both.
+- Non letter/number variables will return 0/false
+
+//Test for alphabetic
+- Tests if variables have a letter
+- Non letter variables will return 0/false
+
+//Test for control character
+- Tests if variables have a control character (eg. \n \0 \b \e)
+- Non control character variables will return 0/false
+
+//Test for digits
+- Tests if variables have a decimal digit character
+- Non digit variables will return 0/false
+
+//Test for graphical characters
+- Tests if variables have a graphical character (Symbols/printable and readable by humans)
+- Non graphical character variables will return 0/false
+
+//Test for lowercase
+- Tests if variables are lowercase
+- Non lowercase variables will return 0/false
+
+//Test for printable character 
+- Similar to isgraph('x'); 
+- Tests if variables are printable characters
+- Non printable variables will return 0/false
+
+//Test for hexadecimals 
+- Tests if variables are hexadecimal characters (0-9 A-F)
+- Non hexadecimal variables will return 0/false

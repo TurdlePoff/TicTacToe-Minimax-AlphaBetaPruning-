@@ -1,0 +1,35 @@
+Ex8 - Description
+
+A program that tests char buffers with str functions
+
+- BadBuffer is a bad buffer as there is no null termination 
+	in the last item in the array
+	- Null terminations are used for strings so that str 
+		functions know where the string ends
+- Greetings2 has the "Hello world" string which does not require 
+	the null termination as it is inputted as a string
+
+SizeOfValues
+	BadBuffer  - 10
+	Greetings1 - 12
+	Greetings2 - 12
+	
+- Strcpy
+	- Copies value of second array into the first array. 
+		Reads up to null termination value.
+	- strcpy(dest1a, Greetings1);
+		- 8 values after the 12 values in Greetings1 will be raw 'Ì' characters
+
+- Strncpy
+	- Copies value of second array into the first array.
+		Copies the number of slots specified
+	- strncpy(dest1c, Greetings1, 20);
+		- 8 more values after the 12 values in Greetings1 will be \0
+		
+- Buffer Overun
+	- Using strcpy with BadBuffer with the dest3[100] array will cause a buffer overun
+		- This is because dest3 has a size of 100 slots
+		- It overlaps with the memory else where that stores HELLO WORLD
+	- Using strcpy with Greetings1 and dest4[5] will cause a buffer overun
+		- This will happen as the size of dest4 has a size of 5 slots
+		- The values within Greetings1 are too big for dest4
