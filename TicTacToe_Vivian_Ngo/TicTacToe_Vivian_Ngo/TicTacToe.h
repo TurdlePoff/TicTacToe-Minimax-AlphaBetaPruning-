@@ -36,13 +36,17 @@ public:
 	char ChangePiece(char checkWithPlayer);
 	//int PosSelection();
 	void PrintBoard(char board[3][3]);					//Prints the game board
-	bool CheckWinner(char player, char board[3][3]);	//Checks the winner of the game
+	bool CheckWinner(char player, bool isPlayerTurn, bool isPvP, char p1Or2, char board[3][3]);	//Checks the winner of the game
 	void PickPosition(char *row, char *col, char board[3][3]);
+	void PrintScores(char p1Or2, bool isPvP, bool isPlayerTurn, bool isDraw);
 
 	void PvCEasy(char p1Or2);	//Player vs Computer Easy mode
 	void PvCHard(char p1Or2);	//Player vs Computer Hard mode
+	void PvC(char p1Or2, void* MiniMax);//----------------------------
 	void PlayerVsPlayer();		//Player vs Player
 	void Customize();
+
+	void Minimax(); //----------------------------------
 
 	//Setters and Getters
 	void SetP1Piece(char p1);	//Sets Player 1's symbol
@@ -58,6 +62,8 @@ private:
 	bool endGame;				//variable determining whether game has ended or not
 	int p1Points;
 	int p2Points;
+	char row;
+	char col;
 };
 
 #endif // _TICTACTOE_H__68
