@@ -37,6 +37,7 @@ public:
 	//int PosSelection();
 	void PrintBoard(char board[3][3]);					//Prints the game board
 	bool CheckWinner(char player, char board[3][3]);	//Checks the winner of the game
+	void PickPosition(char *row, char *col, char board[3][3]);
 
 	void PvCEasy(char p1Or2);	//Player vs Computer Easy mode
 	void PvCHard(char p1Or2);	//Player vs Computer Hard mode

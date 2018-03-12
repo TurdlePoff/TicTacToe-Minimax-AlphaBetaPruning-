@@ -123,7 +123,7 @@ void CTicTacToe::StartUp()
 				}
 				break;
 			}
-			case '2':	//Player vs Player
+			case '2':				//Player vs Player
 			{
 				ctrl.SetColour(6);
 				cout << " =================================================" << endl;
@@ -153,28 +153,26 @@ void CTicTacToe::StartUp()
 
 void CTicTacToe::PvCEasy(char p1Or2)
 {
-	while (true)
+	while (true) //While loop used to reset values if players want to play again
 	{
-		bool isPlayerturn = ((p1Or2 == '1') ? true : false);
-		char currentPlayer = p1Piece;
-		bool turnEnd = false;
-
-		//Initialise new board
-		char board[3][3] =
+		bool isPlayerturn = ((p1Or2 == '1') ? true : false);	//Set true if player chose to go first
+		char currentPlayer = p1Piece;							//Set the current player's piece to p1Piece 
+		char board[3][3] =										//Initialise new board
 		{
 			{ ' ', ' ', ' ' },
 			{ ' ', ' ', ' ' },
 			{ ' ', ' ', ' ' }
 		};
 
-		//While loop used to reset values if players want to play again
-		while (true)
+		
+		while (true)			//While loop for a single game session
 		{
 			PrintBoard(board);	//Print current board status
 
-			char row, col;
+			char* row = 0;			//row to be picked
+			char* col = 0;			//column to be picked
 
-			if (isPlayerturn)	
+			if (isPlayerturn)	//If players turn, allow player to set their position
 			{
 				ctrl.SetColour(6);
 				cout << " =================================================" << endl;
@@ -182,25 +180,9 @@ void CTicTacToe::PvCEasy(char p1Or2)
 				cout << " =================================================" << endl << endl;
 				ctrl.SetColour(7);
 
-				//Prompt user to input position of marker by row and column
-				while (true)
-				{
-					cout << endl << "     Pick a row: ";
-					row = ChooseOption(" Pick a valid row (1, 2, 3): ", 3);
-
-					cout << "     Pick a column: ";
-					col = ChooseOption(" Pick a valid column (1, 2, 3): ", 3);
-
-					//If position is valid, end loop
-					if (board[row - 49][col - 49] == ' ')
-					{
-						break;
-					}
-
-					cout << " Please pick a valid position: " << endl;
-				}
-			}
-			else
+				PickPosition(row, col, board);
+			}	
+			else	//If players turn, allow player to set their position
 			{
 				ctrl.SetColour(6);
 				cout << " =================================================" << endl;
@@ -208,16 +190,18 @@ void CTicTacToe::PvCEasy(char p1Or2)
 				cout << " =================================================" << endl << endl;
 				ctrl.SetColour(7);
 
-				//Insert minimax here================================
+				//Insert minimax here================================++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 				while (true)
 				{
+					//Easy random computer position generator
 					int compRow = (rand() % 3 + 1);
-					row = '0' + compRow;
+					*row = '0' + compRow;
 
 					int compCol = (rand() % 3 + 1);
-					col = '0' + compCol;
+					*col = '0' + compCol;
 
-					if (board[row - 49][col - 49] == ' ')
+					if (board[*row - 49][*col - 49] == ' ') //If the position is valid, proceed with sleep
 					{
 						cout << "   Computer " << currentPlayer << " is making their move: ";
 						Sleep(500);
@@ -234,10 +218,9 @@ void CTicTacToe::PvCEasy(char p1Or2)
 				}
 			}
 			//Set player piece on board
-			board[row - 49][col - 49] = currentPlayer;
+			board[*row - 49][*col - 49] = currentPlayer;
 
-			//Call checkWinner bool function to check if there is a winner
-			//Break while loop and end round
+			//Check if there is a winner. If there is, break while loop and end round
 			if (CheckWinner(currentPlayer, board) == true)
 			{
 				if (isPlayerturn)
@@ -264,6 +247,7 @@ void CTicTacToe::PvCEasy(char p1Or2)
 		cout << "    2) No" << endl << endl;
 		cout << " Please select an option: ";
 
+		//Allows player to choose whether to play again or not
 		if (ChooseOption("Pick a valid option (1, 2): ", 2) == '1')
 		{
 			ctrl.SetColour(6);
@@ -274,6 +258,7 @@ void CTicTacToe::PvCEasy(char p1Or2)
 		}
 		else
 		{
+			//Return to main menu by breaking the while loop
 			ctrl.SetColour(6);
 			cout << " =================================================" << endl;
 			cout << "             Returning to main menu." << endl;
@@ -286,6 +271,120 @@ void CTicTacToe::PvCEasy(char p1Or2)
 
 void CTicTacToe::PvCHard(char p1Or2)
 {
+	while (true) //While loop used to reset values if players want to play again
+	{
+		bool isPlayerturn = ((p1Or2 == '1') ? true : false);	//Set true if player chose to go first
+		char currentPlayer = p1Piece;							//Set the current player's piece to p1Piece 
+		char board[3][3] =										//Initialise new board
+		{
+			{ ' ', ' ', ' ' },
+			{ ' ', ' ', ' ' },
+			{ ' ', ' ', ' ' }
+		};
+
+
+		while (true)			//While loop for a single game session
+		{
+			PrintBoard(board);	//Print current board status
+
+			char* row = 0;			//row to be picked
+			char* col = 0;			//column to be picked
+
+			if (isPlayerturn)	//If players turn, allow player to set their position
+			{
+				ctrl.SetColour(6);
+				cout << " =================================================" << endl;
+				cout << "         Player: " << currentPlayer << "'s turn" << endl;
+				cout << " =================================================" << endl << endl;
+				ctrl.SetColour(7);
+
+				PickPosition(row, col, board);
+			}
+			else	//If players turn, allow player to set their position
+			{
+				ctrl.SetColour(6);
+				cout << " =================================================" << endl;
+				cout << "       Computer: " << currentPlayer << "'s turn" << endl;
+				cout << " =================================================" << endl << endl;
+				ctrl.SetColour(7);
+
+				//Insert minimax here================================++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+				while (true)
+				{
+					//Easy random computer position generator
+					int compRow = (rand() % 3 + 1);
+					*row = '0' + compRow;
+
+					int compCol = (rand() % 3 + 1);
+					*col = '0' + compCol;
+
+					if (board[*row - 49][*col - 49] == ' ') //If the position is valid, proceed with sleep
+					{
+						cout << "   Computer " << currentPlayer << " is making their move: ";
+						Sleep(500);
+						cout << ". ";
+						Sleep(500);
+						cout << ". ";
+						Sleep(500);
+						cout << ". ";
+						Sleep(500);
+						cout << endl << endl;
+
+						break;
+					}
+				}
+			}
+			//Set player piece on board
+			board[*row - 49][*col - 49] = currentPlayer;
+
+			//Check if there is a winner. If there is, break while loop and end round
+			if (CheckWinner(currentPlayer, board) == true)
+			{
+				if (isPlayerturn)
+				{
+
+				}
+				break;
+			}
+
+			//Switch players after a turn is up
+			if (currentPlayer == p1Piece)
+			{
+				currentPlayer = p2Piece;
+			}
+			else
+			{
+				currentPlayer = p1Piece;
+			}
+			isPlayerturn = !isPlayerturn;
+		}
+		//Ask players if they want to play another round
+		cout << " Play again?" << endl << endl;
+		cout << "    1) Yes" << endl;
+		cout << "    2) No" << endl << endl;
+		cout << " Please select an option: ";
+
+		//Allows player to choose whether to play again or not
+		if (ChooseOption("Pick a valid option (1, 2): ", 2) == '1')
+		{
+			ctrl.SetColour(6);
+			cout << " =================================================" << endl;
+			cout << "                 STARTING NEW GAME " << endl;
+			cout << " =================================================" << endl << endl;
+			ctrl.SetColour(7);
+		}
+		else
+		{
+			//Return to main menu by breaking the while loop
+			ctrl.SetColour(6);
+			cout << " =================================================" << endl;
+			cout << "             Returning to main menu." << endl;
+			cout << " =================================================" << endl << endl;
+			ctrl.SetColour(7);
+			break;
+		}
+	}
 }
 
 /***********************
@@ -293,7 +392,77 @@ void CTicTacToe::PvCHard(char p1Or2)
 ************************/
 void CTicTacToe::PlayerVsPlayer()
 {
+	while (true) //While loop used to reset values if players want to play again
+	{
+		char currentPlayer = p1Piece;							//Set the current player's piece to p1Piece 
+		char board[3][3] =										//Initialise new board
+		{
+			{ ' ', ' ', ' ' },
+			{ ' ', ' ', ' ' },
+			{ ' ', ' ', ' ' }
+		};
 
+
+		while (true)			//While loop for a single game session
+		{
+			PrintBoard(board);	//Print current board status
+
+			char* row = 0;			//row to be picked
+			char* col = 0;			//column to be picked
+
+			ctrl.SetColour(6);
+			cout << " =================================================" << endl;
+			cout << "         Player: " << currentPlayer << "'s turn" << endl;
+			cout << " =================================================" << endl << endl;
+			ctrl.SetColour(7);
+
+			PickPosition(row, col, board);
+
+			//Set player piece on board
+			board[*row - 49][*col - 49] = currentPlayer;
+
+			//Check if there is a winner. If there is, break while loop and end round
+			if (CheckWinner(currentPlayer, board) == true)
+			{
+				break;
+			}
+
+			//Switch players after a turn is up
+			if (currentPlayer == p1Piece)
+			{
+				currentPlayer = p2Piece;
+			}
+			else
+			{
+				currentPlayer = p1Piece;
+			}
+		}
+		//Ask players if they want to play another round
+		cout << " Play again?" << endl << endl;
+		cout << "    1) Yes" << endl;
+		cout << "    2) No" << endl << endl;
+		cout << " Please select an option: ";
+
+		//Allows player to choose whether to play again or not
+		if (ChooseOption("Pick a valid option (1, 2): ", 2) == '1')
+		{
+			ctrl.SetColour(6);
+			cout << " =================================================" << endl;
+			cout << "                 STARTING NEW GAME " << endl;
+			cout << " =================================================" << endl << endl;
+			ctrl.SetColour(7);
+		}
+		else
+		{
+			//Return to main menu by breaking the while loop
+			ctrl.SetColour(6);
+			cout << " =================================================" << endl;
+			cout << "             Returning to main menu." << endl;
+			cout << " =================================================" << endl << endl;
+			ctrl.SetColour(7);
+			break;
+		}
+	}
 }
 
 /***********************
@@ -484,6 +653,26 @@ bool CTicTacToe::CheckWinner(char player, char board[3][3])
 		winner = true;
 	}
 	return winner;
+}
+
+void CTicTacToe::PickPosition(char* row, char* col, char board[3][3])
+{
+	while (true)
+	{
+		cout << endl << "     Pick a row: ";
+		*row = ChooseOption(" Pick a valid row (1, 2, 3): ", 3);
+
+		cout << "     Pick a column: ";
+		*col = ChooseOption(" Pick a valid column (1, 2, 3): ", 3);
+
+		//If position is valid, end loop
+		if (board[*row - 49][*col - 49] == ' ')
+		{
+			break;
+		}
+		//Otherwise, repeat while loop
+		cout << " Please pick a valid position: " << endl;
+	}
 }
 
 //Getters and Setters--------------------------------------------------------------------------------

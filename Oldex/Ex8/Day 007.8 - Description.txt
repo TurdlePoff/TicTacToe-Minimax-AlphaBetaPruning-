@@ -1,8 +1,0 @@
-Ex8 - Description
-
-- Program testing the <cstdlib> library functions
-
-- atof('x') will convert inputted strings/chars into doubles
-- atoi('x') will convert inputted strings/chars into integers
-
-- Both also work with arrays

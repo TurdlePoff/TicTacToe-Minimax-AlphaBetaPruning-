@@ -1,9 +1,0 @@
-Ex12 - Description
-
-Program allowing user to customize their own array
-
-- Ask user to input the number of slots they want their array to contain
-- For each slot in the array, ask user to input a value 
-	(can only be integers))
-- Print out all elements of the custom array
-- Delete the array to release memory back to OS
