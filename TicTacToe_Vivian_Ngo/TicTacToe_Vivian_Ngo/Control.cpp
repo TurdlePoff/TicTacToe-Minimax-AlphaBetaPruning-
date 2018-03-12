@@ -17,6 +17,8 @@
 #include "Control.h"
 #include <iostream>
 #include <iomanip>
+#include <cstdlib>
+#include <conio.h>
 
 /**
 * Function for creating a specified number of repeats of 
@@ -74,8 +76,66 @@ void CControl::GotoXY(int _iX, int _iY)
 ***********************/
 void CControl::SetColour(WORD color)
 {
-	
-
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 	return;
+}
+
+/***********************
+* KeyType Function for detecting arrow keys
+* @return KeyType - returns an enum of the key name
+***********************/
+
+KeyType CControl::KeyDetection()
+{
+
+	int iKeyPress = _getch();
+	if (iKeyPress != 0 && iKeyPress != 0xE0)
+	{
+		if (iKeyPress == 32)		//If SPACE is pressed
+		{
+			return SPACE;
+		}
+		//else if (iKeyPress == 27)	//If ` is pressed
+		//{
+		//	return EXIT;
+		//}
+	}
+	else
+	{
+		// Arrow Key Codes.
+		// TF: Constant
+		const int g_kiDownArrow = 80;
+		const int g_kiUpArrow = 72;
+		const int g_kiLeftArrow = 75;
+		const int g_kiRightArrow = 77;
+	
+		int iCheckForArrowKey = _getch();
+		switch (iCheckForArrowKey)
+		{
+			case g_kiUpArrow:
+			{
+				return UP;
+				break;
+			}
+			case g_kiDownArrow:
+			{
+				return DOWN;
+				break;
+			}
+			case g_kiLeftArrow:
+			{
+				return LEFT;
+				break;
+			}
+			case g_kiRightArrow:
+			{
+				return RIGHT;
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	}
 }

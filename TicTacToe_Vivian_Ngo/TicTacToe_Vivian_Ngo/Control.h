@@ -22,6 +22,10 @@
 
 #include <Windows.h>
 
+enum KeyType
+{
+	UP, DOWN, LEFT, RIGHT, SPACE, EXIT
+};
 
 class CControl
 {
@@ -30,6 +34,7 @@ public:
 	void ClearScreen(int _iX, int _iY);
 	void GotoXY(int _iX, int _iY);
 	void SetColour(WORD color);
+	KeyType KeyDetection();
 
 private:
 

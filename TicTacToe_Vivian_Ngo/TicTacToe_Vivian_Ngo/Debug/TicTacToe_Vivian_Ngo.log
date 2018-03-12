@@ -1,8 +1,7 @@
-﻿  Control.cpp
-e:\hw\mds\vs\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\control.cpp(39): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
-  TicTacToe.cpp
-e:\hw\mds\vs\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\tictactoe.cpp(45): warning C4309: 'initializing': truncation of constant value
-e:\hw\mds\vs\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\tictactoe.cpp(46): warning C4309: 'initializing': truncation of constant value
-e:\hw\mds\vs\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\tictactoe.cpp(47): warning C4309: 'initializing': truncation of constant value
+﻿  TicTacToe.cpp
+  main.cpp
+  Control.cpp
+d:\users\vivian.ngo7572\desktop\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\control.cpp(41): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
   Generating Code...
-  TicTacToe_Vivian_Ngo.vcxproj -> E:\hw\MDS\VS\Y2Uni\TicTacToe_Vivian_Ngo\Debug\TicTacToe_Vivian_Ngo.exe
+d:\users\vivian.ngo7572\desktop\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\control.cpp(141): warning C4715: 'CControl::KeyDetection': not all control paths return a value
+  TicTacToe_Vivian_Ngo.vcxproj -> D:\Users\vivian.ngo7572\Desktop\Y2Uni\TicTacToe_Vivian_Ngo\Debug\TicTacToe_Vivian_Ngo.exe
