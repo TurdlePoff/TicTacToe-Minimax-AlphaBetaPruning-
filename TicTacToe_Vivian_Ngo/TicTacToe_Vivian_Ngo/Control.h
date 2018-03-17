@@ -34,6 +34,7 @@ public:
 	void ClearScreen(int _iX, int _iY);
 	void GotoXY(int _iX, int _iY);
 	void SetColour(WORD color);
+	void PrintInColour(char piece);
 	KeyType KeyDetection();
 
 private:

@@ -81,10 +81,21 @@ void CControl::SetColour(WORD color)
 }
 
 /***********************
+* SetColour: Function for setting colour of text
+* @parameter: color - number of the colour you would like to set the text
+* @parameter: piece - the character piece to change colour and print
+***********************/
+void CControl::PrintInColour(char piece)
+{
+	SetColour(14);
+	std::cout << piece;
+	SetColour(7);
+}
+
+/***********************
 * KeyType Function for detecting arrow keys
 * @return KeyType - returns an enum of the key name
 ***********************/
-
 KeyType CControl::KeyDetection()
 {
 

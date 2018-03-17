@@ -35,14 +35,13 @@ public:
 	char ChooseOption(std::string question, int numOptions); //Checks the option the player selected
 	char ChangePiece(char checkWithPlayer);
 	//int PosSelection();
-	void PrintBoard(char board[3][3]);					//Prints the game board
-	bool CheckWinner(char player, bool isPlayerTurn, bool isPvP, char p1Or2, char board[3][3]);	//Checks the winner of the game
-	void PickPosition(char *row, char *col, char board[3][3]);
+	void PrintBoard();					//Prints the game board
+	void PrintWinningPiece(int x, int y);
+	bool CheckWinner(char player, bool isPlayerTurn, bool isPvP, char p1Or2);	//Checks the winner of the game
 	void PrintScores(char p1Or2, bool isPvP, bool isPlayerTurn, bool isDraw);
 
-	void PvCEasy(char p1Or2);	//Player vs Computer Easy mode
-	void PvCHard(char p1Or2);	//Player vs Computer Hard mode
-	void PvC(char p1Or2, void* MiniMax);//----------------------------
+	void PlayGame(char p1Or2, bool easyMode, bool pvp);	//Player vs Computer Easy mode
+	//void PvCHard(char p1Or2);	//Player vs Computer Hard mode
 	void PlayerVsPlayer();		//Player vs Player
 	void Customize();
 
@@ -53,7 +52,6 @@ public:
 	void SetP2Piece(char p2);	//Sets Player 2's symbol
 	char GetP1Piece();			//Gets Player 1's symbol
 	char GetP2Piece();			//Gets Player 2's symbol
-
 
 private:
 	CControl ctrl;				//Class supplying functions to support aesthetics of game
