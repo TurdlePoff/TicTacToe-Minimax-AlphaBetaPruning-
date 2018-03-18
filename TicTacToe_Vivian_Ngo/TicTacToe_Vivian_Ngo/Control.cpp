@@ -74,79 +74,20 @@ void CControl::GotoXY(int _iX, int _iY)
 *     2 = Green      |   6 = Yellow         |   10 = LightGreen  |   14 = LightYellow
 *     3 = Cyan       |   7 = LightGray      |   11 = LightCyan   |   15 = White
 ***********************/
-void CControl::SetColour(WORD color)
+void CControl::SetColour(WORD colour)
 {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colour);
 	return;
 }
 
 /***********************
-* SetColour: Function for setting colour of text
-* @parameter: color - number of the colour you would like to set the text
+* PrintInColour: Function for printing a single character in the specified colour
+* @parameter: piece - the character piece to change colour and print
 * @parameter: piece - the character piece to change colour and print
 ***********************/
-void CControl::PrintInColour(char piece)
+void CControl::PrintCharInColour(char piece, WORD colour)
 {
-	SetColour(14);
+	SetColour(colour);
 	std::cout << piece;
 	SetColour(7);
-}
-
-/***********************
-* KeyType Function for detecting arrow keys
-* @return KeyType - returns an enum of the key name
-***********************/
-KeyType CControl::KeyDetection()
-{
-
-	int iKeyPress = _getch();
-	if (iKeyPress != 0 && iKeyPress != 0xE0)
-	{
-		if (iKeyPress == 32)		//If SPACE is pressed
-		{
-			return SPACE;
-		}
-		//else if (iKeyPress == 27)	//If ` is pressed
-		//{
-		//	return EXIT;
-		//}
-	}
-	else
-	{
-		// Arrow Key Codes.
-		// TF: Constant
-		const int g_kiDownArrow = 80;
-		const int g_kiUpArrow = 72;
-		const int g_kiLeftArrow = 75;
-		const int g_kiRightArrow = 77;
-	
-		int iCheckForArrowKey = _getch();
-		switch (iCheckForArrowKey)
-		{
-			case g_kiUpArrow:
-			{
-				return UP;
-				break;
-			}
-			case g_kiDownArrow:
-			{
-				return DOWN;
-				break;
-			}
-			case g_kiLeftArrow:
-			{
-				return LEFT;
-				break;
-			}
-			case g_kiRightArrow:
-			{
-				return RIGHT;
-				break;
-			}
-			default:
-			{
-				break;
-			}
-		}
-	}
 }
