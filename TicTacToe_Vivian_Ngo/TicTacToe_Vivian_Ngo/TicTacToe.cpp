@@ -37,6 +37,8 @@ bool CTicTacToe::winnerBoard[3][3] =
 
 /***********************
 * TicTacToe Destructor
+* @author: Vivian Ngo
+* @date: 14/03/18
 ************************/
 CTicTacToe::CTicTacToe()
 {
@@ -55,11 +57,15 @@ CTicTacToe::CTicTacToe()
 
 /***********************
 * TicTacToe Destructor
+* @author: Vivian Ngo
+* @date: 07/03/18
 ************************/
 CTicTacToe::~CTicTacToe(){}
 
 /***********************
 * Title: Prints the Tic Tac Toe title text
+* @author: Vivian Ngo
+* @date: 14/03/18
 ************************/
 void CTicTacToe::Title()
 {
@@ -76,6 +82,8 @@ void CTicTacToe::Title()
 *	- Play a two player game against another human next to them
 *	- Customize their board pieces
 *	- Exit the game
+* @author: Vivian Ngo
+* @date: 07/03/18
 ************************/
 void CTicTacToe::StartUp()
 {
@@ -114,7 +122,7 @@ void CTicTacToe::StartUp()
 				cout << "         2) Hard" << endl << endl;
 				cout << "     Select an option: ";
 
-				char easyOrHard = ChooseOption(" Pick a valid option (1, 2): ", 2);
+				char easyOrHard = ChooseOption("     Pick a valid option (1, 2): ", 2);
 				
 				// Inform player of their difficulty choice
 				ctrl.SetColour(6);
@@ -193,6 +201,8 @@ void CTicTacToe::StartUp()
 * PrintBoard: Prints the CTicTacToe board
 *			  PrintWinningPiece() function is used to check if the piece
 *								  is a winning piece and if so, print in colour
+* @author: Vivian Ngo
+* @date: 14/03/18
 ************************/
 void CTicTacToe::PrintBoard()
 {
@@ -222,6 +232,8 @@ void CTicTacToe::PrintBoard()
 
 /***********************
 * PrintWinningPiece: Used to check if the piece is a winning piece and if so, print in colour
+* @author: Vivian Ngo
+* @date: 14/03/18
 * @parameter: x - the x position of the board to be checked
 * @parameter: y - the y position of the board to be checked
 ************************/
@@ -239,8 +251,11 @@ void CTicTacToe::PrintWinningPiece(int x, int y)
 
 /***********************
 * ChooseOption: Allows player to choose an option and prompts a question if a wrong input is entered
+* @author: Vivian Ngo
+* @date: 14/03/18
 * @parameter: question - string containing the question to ask player if a wrong input is entered
 * @parameter: numOptions - the number of options to select from
+* @return: valid option inputted by player
 ************************/
 char CTicTacToe::ChooseOption(std::string question, int numOptions)
 {
@@ -259,6 +274,8 @@ char CTicTacToe::ChooseOption(std::string question, int numOptions)
 
 /***********************
 * PrintWinningPiece: Used to check if the piece is a winning piece and if so, print in colour
+* @author: Vivian Ngo
+* @date: 14/03/18
 * @parameter: player - The character of the current player's piece
 * @parameter: isPlayerTurn - Checks if it is player 1's turn
 * @parameter: isPvP - Checks if the game match is PvP or PvC
@@ -335,6 +352,8 @@ bool CTicTacToe::CheckWinner(char player, bool isPlayerTurn, bool isPvP, char p1
 
 /***********************
 * PrintScores: Prints the scores of the current game session
+* @author: Vivian Ngo
+* @date: 14/03/18
 * @parameter: isDraw - Checks if game is a draw
 * @parameter: isPvP - Checks if the game is a PvP (Player vs Player) or PvC (Player vs Computer) game
 * @parameter: isPlayerTurn - Checks if the current player is player 1
@@ -411,6 +430,8 @@ void CTicTacToe::PrintScores(bool isDraw, bool isPvP, bool isPlayerTurn, char p1
 * PlayGame: Starts up and plays the game depending on the parameters given
 *					(p1Or2 and easyMode parameters are used for player vs computer games
 *					 these are defaulted to '1' [p1Or2] and true [easyMode] when calling pvp mode)
+* @author: Vivian Ngo
+* @date: 14/03/18
 * @parameter: p1Or2 - (player vs computer) input from player for whether they want to play as player 1 or 2
 * @parameter: easyMode - (player vs computer) input from player for whether they want to play easy or hard mode
 * @parameter: isPvP - boolean variable that determines if the game is player vs player or player vs computer
@@ -486,7 +507,7 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 				ctrl.SetColour(7);
 
 				//Insert minimax here================================++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				if (easyMode)
+				if (true)	//easyMode) SET WHEN MINIMAX IMPLEMENTED
 				{
 					while (true)
 					{
@@ -573,6 +594,8 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 *	- Player1's game piece
 *	- Player2's game piece 
 *	- Swap Player 1 and Player 2's pieces with each other
+* @author: Vivian Ngo
+* @date: 07/03/18
 ************************/
 void CTicTacToe::Customize()
 {
@@ -652,6 +675,8 @@ void CTicTacToe::Customize()
 /***********************
 * ChooseCharacter: Takes the user's input and checks if it is a valid board game piece
 * @return: newPiece - The valid new piece the user inputed
+* @author: Vivian Ngo
+* @date: 14/03/18
 ************************/
 char CTicTacToe::ChangePiece(char checkWithPlayer)
 {
@@ -676,6 +701,8 @@ char CTicTacToe::ChangePiece(char checkWithPlayer)
 
 /***********************
 * SetGameEnd: Set the endGame value to true
+* @author: Vivian Ngo
+* @date: 07/03/18
 ************************/
 void CTicTacToe::SetGameEnd()
 {
@@ -684,6 +711,8 @@ void CTicTacToe::SetGameEnd()
 
 /***********************
 * GetHasGameEnded: return the endGame value
+* @author: Vivian Ngo
+* @date: 07/03/18
 ************************/
 bool CTicTacToe::GetHasGameEnded()
 {
