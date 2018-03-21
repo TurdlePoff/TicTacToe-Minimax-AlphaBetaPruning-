@@ -23,6 +23,8 @@
 /**
 * Function for creating a specified number of repeats of 
 *	whatever character the user specifies
+* @author: Vivian Ngo
+* @date: 07/03/18
 * @parameter: character - the character the user wishes to repeat
 * @parameter: size - the amount of repeats the user wants to make
 */
@@ -33,6 +35,8 @@ void CControl::Spc(char character, int size)
 
 /***********************
 * ClearScreen: Function for clearing the command line screen
+* @author: Vivian Ngo
+* @date: 07/03/18
 * @parameter: _iX - X coordinate of where to start clearing the screen
 * @parameter: _iY - Y coordinate of where to start clearing the screen
 ***********************/
@@ -56,6 +60,10 @@ void CControl::ClearScreen(int _iX, int _iY)
 
 /***********************
 * GotoXY: Function for going to a certain location on the command line
+* @author: Vivian Ngo
+* @date: 07/03/18
+* @parameter: _iX - X coordinate of where to place cursor
+* @parameter: _iY - Y coordinate of where to place cursor
 ***********************/
 void CControl::GotoXY(int _iX, int _iY)
 {
@@ -67,6 +75,8 @@ void CControl::GotoXY(int _iX, int _iY)
 
 /***********************
 * SetColour: Function for setting colour of text
+* @author: Vivian Ngo
+* @date: 07/03/18
 * @parameter: color - number of the colour you would like to set the text
 *     Colours:
 *     0 = Black      |   4 = Red            |   8 = DarkGray     |   12 = LightRed
@@ -82,6 +92,8 @@ void CControl::SetColour(WORD colour)
 
 /***********************
 * PrintInColour: Function for printing a single character in the specified colour
+* @author: Vivian Ngo
+* @date: 07/03/18
 * @parameter: piece - the character piece to change colour and print
 * @parameter: piece - the character piece to change colour and print
 ***********************/
