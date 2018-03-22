@@ -19,21 +19,21 @@
 
 using namespace std;
 
-//Initialise new tictactoe board
-char CTicTacToe::board[3][3] =	
-{
-	{ ' ', ' ', ' ' },
-	{ ' ', ' ', ' ' },
-	{ ' ', ' ', ' ' }
-};
-
-//Initialise new winnerBoard (used to check whether to print 3 in a row in colour or not)
-bool CTicTacToe::winnerBoard[3][3] =
-{
-	{ false, false, false },
-	{ false, false, false },
-	{ false, false, false }
-};
+////Initialise new tictactoe board
+//char CTicTacToe::board[3][3] =	
+//{
+//	{ ' ', ' ', ' ' },
+//	{ ' ', ' ', ' ' },
+//	{ ' ', ' ', ' ' }
+//};
+//
+////Initialise new winnerBoard (used to check whether to print 3 in a row in colour or not)
+//bool CTicTacToe::winnerBoard[3][3] =
+//{
+//	{ false, false, false },
+//	{ false, false, false },
+//	{ false, false, false }
+//};
 
 /***********************
 * TicTacToe Destructor
@@ -43,11 +43,13 @@ bool CTicTacToe::winnerBoard[3][3] =
 CTicTacToe::CTicTacToe()
 {
 	//Initialize global variables
+	board = new CBoard();
+
 	p1Piece = 'X';
 	p2Piece = 'O';
 	p1Points = 0;
 	p2Points = 0;
-	endGame = false;
+	gameEnded = false;
 	HWND hwnd = GetConsoleWindow();
 	if (hwnd != NULL)
 	{				 //  position	 size
@@ -60,7 +62,11 @@ CTicTacToe::CTicTacToe()
 * @author: Vivian Ngo
 * @date: 07/03/18
 ************************/
-CTicTacToe::~CTicTacToe(){}
+CTicTacToe::~CTicTacToe()
+{
+	delete board;
+	board = 0;
+}
 
 /***********************
 * Title: Prints the Tic Tac Toe title text
@@ -88,7 +94,7 @@ void CTicTacToe::Title()
 void CTicTacToe::StartUp()
 {
 	Title(); //Print title that will last for the entire duration of the game until exited
-	while (!GetHasGameEnded())
+	while (!gameEnded)
 	{
 		ctrl.ClearScreen(0, 4);
 		cout << " =================================================" << endl;
@@ -187,65 +193,13 @@ void CTicTacToe::StartUp()
 			}
 			case '4':
 			{
-				SetGameEnd();		//Set the endGame value to true
+				gameEnded = true;		//Set the endGame value to true
 			}
 		}
-		if (GetHasGameEnded())		//If game has ended, break while loop and close application
+		if (gameEnded)		//If game has ended, break while loop and close application
 		{
 			break;
 		}
-	}
-}
-
-/***********************
-* PrintBoard: Prints the CTicTacToe board
-*			  PrintWinningPiece() function is used to check if the piece
-*								  is a winning piece and if so, print in colour
-* @author: Vivian Ngo
-* @date: 14/03/18
-************************/
-void CTicTacToe::PrintBoard()
-{
-	cout << endl;
-	ctrl.Spc(' ', 5); cout << "                 COLUMN" << endl;
-	ctrl.Spc(' ', 5); cout << "       " << endl;
-	ctrl.Spc(' ', 5); cout << "            1       2       3" << endl;
-	ctrl.Spc(' ', 5); cout << "        ________________________" << endl;
-	ctrl.Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	ctrl.Spc(' ', 5); cout << "    1  |    "; PrintWinningPiece(0, 0);
-						   cout << "   |   "; PrintWinningPiece(0, 1);
-						   cout << "   |   "; PrintWinningPiece(0, 2); cout << "   |" << endl;
-	ctrl.Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	ctrl.Spc(' ', 5); cout << "       |------------------------|" << endl;
-	ctrl.Spc(' ', 5); cout << " R     |        |       |       |" << endl;
-	ctrl.Spc(' ', 5); cout << " O  2  |    "; PrintWinningPiece(1, 0);
-						   cout << "   |   "; PrintWinningPiece(1, 1);
-						   cout << "   |   "; PrintWinningPiece(1, 2); cout << "   |" << endl;
-	ctrl.Spc(' ', 5); cout << " W     |        |       |       |" << endl;
-	ctrl.Spc(' ', 5); cout << "       |------------------------|" << endl;
-	ctrl.Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	ctrl.Spc(' ', 5); cout << "    3  |    "; PrintWinningPiece(2, 0);
-						   cout << "   |   "; PrintWinningPiece(2, 1);
-						   cout << "   |   "; PrintWinningPiece(2, 2); cout << "   |" << endl;
-	ctrl.Spc(' ', 5); cout << "       |________|_______|_______|" << endl << endl;
-}
-
-/***********************
-* PrintWinningPiece: Used to check if the piece is a winning piece and if so, print in colour
-* @author: Vivian Ngo
-* @date: 14/03/18
-* @parameter: x - the x position of the board to be checked
-* @parameter: y - the y position of the board to be checked
-************************/
-void CTicTacToe::PrintWinningPiece(int x, int y)
-{
-	if (winnerBoard[x][y])
-	{
-		ctrl.PrintCharInColour(board[x][y], 14); //Print character piece in colour
-	}
-	else
-	{
-		cout << board[x][y];			 //Print character piece without colouring
 	}
 }
 
@@ -273,81 +227,45 @@ char CTicTacToe::ChooseOption(std::string question, int numOptions)
 }
 
 /***********************
-* PrintWinningPiece: Used to check if the piece is a winning piece and if so, print in colour
+* CheckGameOver: Check if game is over and print scores if so
 * @author: Vivian Ngo
 * @date: 14/03/18
 * @parameter: player - The character of the current player's piece
 * @parameter: isPlayerTurn - Checks if it is player 1's turn
 * @parameter: isPvP - Checks if the game match is PvP or PvC
 * @parameter: p1Or2 - Checks if the current player is player 1 or player 2
+* @return: gameOver - If true, the game is over. Else, the game continues.
 ************************/
-bool CTicTacToe::CheckWinner(char player, bool isPlayerTurn, bool isPvP, char p1Or2)
+bool CTicTacToe::CheckGameOver(char player, bool isPlayerTurn, bool isPvP, char p1Or2)
 {
-	bool winner = false;
+	bool gameOver = false;
 
-	//If there are no more spaces left on the board and there has been no winner, 
-	//									end the game with a draw and print scores
-	if (board[0][0] != ' ' && board[0][1] != ' ' && board[0][2] != ' ' &&
-		board[1][0] != ' ' && board[1][1] != ' ' && board[1][2] != ' ' &&
-		board[2][0] != ' ' && board[2][1] != ' ' && board[2][2] != ' ')
+	if (board->CheckForDraw()) // If there is a draw, print scores
 	{
 		cout << endl;
 		ctrl.ClearScreen(0, 4);
-		PrintBoard();
-		winner = true;
 
+		board->PrintBoard();
 		ctrl.SetColour(6);
-		cout << " =================================================" << endl;
-		cout << "                      DRAW!!" << endl;
 		PrintScores(true, isPvP, isPlayerTurn, p1Or2);
 		ctrl.SetColour(7);
+
+		gameOver = true;
 	}
-	else //Check for a 3 in a row and set winnerBoard values to true to change the colour of the winning pieces
+	else if (board->CheckForWinner(player)) // If there is a winner, print scores
 	{
-		if (board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][0] == board[0][2] && board[0][0] == player)
-		{
-			winnerBoard[0][0] = winnerBoard[0][1] = winnerBoard[0][2] = winner = true;
-		}
-		else if (board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][0] == board[1][1] && board[1][0] == player)
-		{
-			winnerBoard[1][0] = winnerBoard[1][1] = winnerBoard[1][2] = winner = true;
-		}
-		else if (board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][0] == board[2][2] && board[2][0] == player)
-		{
-			winnerBoard[2][0] = winnerBoard[2][1] = winnerBoard[2][2] = winner = true;
-		}
-		else if (board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[1][0] == board[2][0] && board[0][0] == player)
-		{
-			winnerBoard[0][0] = winnerBoard[1][0] = winnerBoard[2][0] = winner = true;
-		}
-		else if (board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[1][1] == board[2][1] && board[0][1] == player)
-		{
-			winnerBoard[0][1] = winnerBoard[1][1] = winnerBoard[2][1] = winner = true;
-		}
-		else if (board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[1][2] == board[2][2] && board[0][2] == player)
-		{
-			winnerBoard[0][2] = winnerBoard[1][2] = winnerBoard[2][2] = winner = true;
-		}
-		else if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] == board[2][2] && board[0][0] == player)
-		{
-			winnerBoard[0][0] = winnerBoard[1][1] = winnerBoard[2][2] = winner = true;
-		}
-		else if (board[2][0] == board[1][1] && board[1][1] == board[0][2] && board[1][1] == board[0][2] && board[2][0] == player)
-		{
-			winnerBoard[2][0] = winnerBoard[1][1] = winnerBoard[0][2] = winner = true;
-		}
+		cout << endl;
+		ctrl.ClearScreen(0, 4);
 
-		if (winner) //If there is a winner apparent, end the game and print the new scores
-		{
-			ctrl.ClearScreen(0, 4);
-			PrintBoard();
+		board->PrintBoard();
+		ctrl.SetColour(6);
+		PrintScores(false, isPvP, isPlayerTurn, p1Or2);
+		ctrl.SetColour(7);
 
-			ctrl.SetColour(6);
-			PrintScores(false, isPvP, isPlayerTurn, p1Or2);
-			ctrl.SetColour(7);
-		}
+		gameOver = true;
 	}
-	return winner;
+
+	return gameOver;
 }
 
 /***********************
@@ -365,6 +283,8 @@ void CTicTacToe::PrintScores(bool isDraw, bool isPvP, bool isPlayerTurn, char p1
 	{
 		if (isDraw) //If the game is a draw, print the current score
 		{
+			cout << " =================================================" << endl;
+			cout << "                      DRAW!!" << endl;
 			cout << endl << "     Player 1 Points: " << p1Points
 				<< "      Player 2 Points: " << p2Points << endl;
 			cout << " =================================================" << endl << endl;
@@ -388,6 +308,8 @@ void CTicTacToe::PrintScores(bool isDraw, bool isPvP, bool isPlayerTurn, char p1
 	{
 		if (isDraw)  //If the game is a draw, print the current score
 		{
+			cout << " =================================================" << endl;
+			cout << "                      DRAW!!" << endl;
 			cout << endl << "     Player Points: " << ((p1Or2 == '1') ? p1Points : p2Points)
 				<< "      Computer Points: " << ((p1Or2 == '1') ? p2Points : p1Points) << endl;
 			cout << " =================================================" << endl << endl;
@@ -445,28 +367,13 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 		bool isPlayerTurn = ((p1Or2 == '1') ? true : false);	//Set true if player chose to go first
 		char currentPlayer = p1Piece;							//Set the current player's piece to p1Piece 
 
-		//Clear the main TicTacToe board
-		for (int i = 0; i < 3; ++i)
-		{
-			for (int j = 0; j < 3; ++j)
-			{
-				board[i][j] = ' ';
-			}
-		}
-
-		//Clear the boolean board so there are no winning pieces for the new match
-		for (int i = 0; i < 3; ++i)
-		{
-			for (int j = 0; j < 3; ++j)
-			{
-				winnerBoard[i][j] = false;
-			}
-		}
+		board->ResetBoard();
+		board->ResetWinBoard();
 
 		while (true)			//While loop for a single game session
 		{
 			ctrl.ClearScreen(0, 4);
-			PrintBoard();		//Print current board status
+			board->PrintBoard();		//Print current board status
 
 			row = 0;			//row to be picked
 			col = 0;			//column to be picked
@@ -484,13 +391,13 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 				{
 					//Allow player to pick a row and column
 					cout << endl << "     Pick a row: ";
-					row = ChooseOption(" Pick a valid row (1, 2, 3): ", 3);
+					row = ChooseOption("     Pick a valid row (1, 2, 3): ", 3);
 
 					cout << "     Pick a column: ";
 					col = ChooseOption("     Pick a valid column (1, 2, 3): ", 3);
 
 					//If position is valid, end loop
-					if (board[row - 49][col - 49] == ' ')
+					if (board->CheckPiece(row - 49, col - 49) == ' ')
 					{
 						break;
 					}
@@ -518,7 +425,7 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 						int compCol = (rand() % 3 + 1);
 						col = '0' + compCol;
 
-						if (board[row - 49][col - 49] == ' ') //If the position is valid, proceed with sleep
+						if (board->CheckPiece(row - 49, col - 49) == ' ') //If the position is valid, proceed with sleep
 						{
 							cout << "     Computer " << currentPlayer << " is making their move: ";
 							Sleep(500);
@@ -545,10 +452,10 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 				
 			}
 			//Set player piece on board
-			board[row - 49][col - 49] = currentPlayer;
+			board->Insert(currentPlayer, row - 49, col - 49);
 
 			//Check if there is a winner. If there is, break while loop and end round
-			if (CheckWinner(currentPlayer, isPlayerTurn, isPvP, p1Or2))
+			if (CheckGameOver(currentPlayer, isPlayerTurn, isPvP, p1Or2))
 			{
 				break;
 			}
@@ -697,24 +604,4 @@ char CTicTacToe::ChangePiece(char checkWithPlayer)
 		}
 	}
 	return newPiece;
-}
-
-/***********************
-* SetGameEnd: Set the endGame value to true
-* @author: Vivian Ngo
-* @date: 07/03/18
-************************/
-void CTicTacToe::SetGameEnd()
-{
-	endGame = true;
-}
-
-/***********************
-* GetHasGameEnded: return the endGame value
-* @author: Vivian Ngo
-* @date: 07/03/18
-************************/
-bool CTicTacToe::GetHasGameEnded()
-{
-	return endGame;
 }
