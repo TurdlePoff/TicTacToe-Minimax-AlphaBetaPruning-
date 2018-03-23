@@ -38,7 +38,6 @@ public:
 private:
 	char board[3][3];								//The TicTacToe game board
 	bool winnerBoard[3][3];							//The winner board used to check if there is a 3 in a row
-	CControl* ctrl;									//Control class with functions to support the aethetics of the game
 };
 
 #endif // __BOARD_H__

@@ -1,2 +1,9 @@
-﻿  TicTacToe.cpp
+﻿  main.cpp
+  TicTacToe.cpp
+  Control.cpp
+d:\users\vivian.ngo7572\desktop\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\control.cpp(45): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
+  Board.cpp
+  Generating Code...
+  LINK : D:\Users\vivian.ngo7572\Desktop\Y2Uni\TicTacToe_Vivian_Ngo\Debug\TicTacToe_Vivian_Ngo.exe not found or not built by the last incremental link; performing full link
+MiniMax.obj : warning LNK4099: PDB 'vc141.pdb' was not found with 'MiniMax.obj' or at 'D:\Users\vivian.ngo7572\Desktop\Y2Uni\TicTacToe_Vivian_Ngo\Debug\vc141.pdb'; linking object as if no debug info
   TicTacToe_Vivian_Ngo.vcxproj -> D:\Users\vivian.ngo7572\Desktop\Y2Uni\TicTacToe_Vivian_Ngo\Debug\TicTacToe_Vivian_Ngo.exe

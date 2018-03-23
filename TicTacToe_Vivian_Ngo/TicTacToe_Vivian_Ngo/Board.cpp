@@ -28,7 +28,6 @@ CBoard::CBoard()
 	//Initialise new tictactoe board
 	ResetBoard();
 	ResetWinBoard();
-	ctrl = new CControl();
 }
 
 /***********************
@@ -38,8 +37,8 @@ CBoard::CBoard()
 ************************/
 CBoard::~CBoard()
 {
-	delete ctrl;
-	ctrl = 0;
+	/*delete ctrl;
+	ctrl = 0;*/
 }
 
 /***********************
@@ -52,27 +51,27 @@ CBoard::~CBoard()
 void CBoard::PrintBoard()
 {
 	cout << endl;
-	ctrl->Spc(' ', 5); cout << "                 COLUMN" << endl;
-	ctrl->Spc(' ', 5); cout << "       " << endl;
-	ctrl->Spc(' ', 5); cout << "            1       2       3" << endl;
-	ctrl->Spc(' ', 5); cout << "        ________________________" << endl;
-	ctrl->Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	ctrl->Spc(' ', 5); cout << "    1  |    "; PrintWinningPiece(0, 0);
+	CControl::Spc(' ', 5); cout << "                 COLUMN" << endl;
+	CControl::Spc(' ', 5); cout << "       " << endl;
+	CControl::Spc(' ', 5); cout << "            1       2       3" << endl;
+	CControl::Spc(' ', 5); cout << "        ________________________" << endl;
+	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << "    1  |    "; PrintWinningPiece(0, 0);
 					   cout << "   |   "; PrintWinningPiece(0, 1);
 					   cout << "   |   "; PrintWinningPiece(0, 2); cout << "   |" << endl;
-	ctrl->Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	ctrl->Spc(' ', 5); cout << "       |------------------------|" << endl;
-	ctrl->Spc(' ', 5); cout << " R     |        |       |       |" << endl;
-	ctrl->Spc(' ', 5); cout << " O  2  |    "; PrintWinningPiece(1, 0);
+	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << "       |------------------------|" << endl;
+	CControl::Spc(' ', 5); cout << " R     |        |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << " O  2  |    "; PrintWinningPiece(1, 0);
 					   cout << "   |   "; PrintWinningPiece(1, 1);
 					   cout << "   |   "; PrintWinningPiece(1, 2); cout << "   |" << endl;
-	ctrl->Spc(' ', 5); cout << " W     |        |       |       |" << endl;
-	ctrl->Spc(' ', 5); cout << "       |------------------------|" << endl;
-	ctrl->Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	ctrl->Spc(' ', 5); cout << "    3  |    "; PrintWinningPiece(2, 0);
+	CControl::Spc(' ', 5); cout << " W     |        |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << "       |------------------------|" << endl;
+	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << "    3  |    "; PrintWinningPiece(2, 0);
 					   cout << "   |   "; PrintWinningPiece(2, 1);
 					   cout << "   |   "; PrintWinningPiece(2, 2); cout << "   |" << endl;
-	ctrl->Spc(' ', 5); cout << "       |________|_______|_______|" << endl << endl;
+	CControl::Spc(' ', 5); cout << "       |________|_______|_______|" << endl << endl;
 }
 
 /***********************
@@ -86,7 +85,7 @@ void CBoard::PrintWinningPiece(int x, int y)
 {
 	if (winnerBoard[x][y])
 	{
-		ctrl->PrintCharInColour(board[x][y], 14); //Print character piece in a light yellow colour
+		CControl::PrintCharInColour(board[x][y], 14); //Print character piece in a light yellow colour
 	}
 	else
 	{
