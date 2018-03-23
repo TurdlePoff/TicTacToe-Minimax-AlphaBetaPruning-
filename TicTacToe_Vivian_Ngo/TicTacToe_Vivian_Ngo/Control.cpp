@@ -42,7 +42,7 @@ void CControl::Spc(char character, int size)
 ***********************/
 void CControl::ClearScreen(int _iX, int _iY)
 {
-	COORD coordScreen = { _iX, _iY };
+	COORD coordScreen = { (short) _iX, (short) _iY };
 	DWORD cCharsWritten;
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	DWORD dwConSize;

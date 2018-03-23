@@ -114,13 +114,11 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MiniMax.cpp" />
     <ClCompile Include="TicTacToe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Control.h" />
-    <ClInclude Include="MiniMax.h" />
     <ClInclude Include="TicTacToe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

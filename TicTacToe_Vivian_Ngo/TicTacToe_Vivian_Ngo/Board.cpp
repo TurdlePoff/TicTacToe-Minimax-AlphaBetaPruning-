@@ -152,16 +152,17 @@ void CBoard::ResetWinBoard()
 }
 
 /***********************
-* Remove: Remove a piece from the game board
+* CheckPiece: Checks a piece with the position specified on the board
 * @author: Vivian Ngo
 * @date: 14/03/18
 * @parameter: xPos - the x position of the board to check
 * @parameter: yPos - the y position of the board to check
-* @return: board[xPos][yPos] - return the char piece at the specified position
+* @parameter: piece - the piece to check the board position with
+* @return: true if piece is equal to piece on board else false.
 ************************/
-char CBoard::CheckPiece(int xPos, int yPos)
+bool CBoard::CheckPiece(int xPos, int yPos, char piece)
 {
-	return board[xPos][yPos];
+	return (board[xPos][yPos] == piece ? true : false);
 }
 
 /***********************
@@ -229,3 +230,11 @@ bool CBoard::CheckForWinner(char player)
 	return winner;
 }
 
+//void CBoard::ConvertRowCol(int& xPos, int& yPos, int val)
+//{
+//	switch (val)
+//	{
+//		case 0;
+//	}
+//}
+//

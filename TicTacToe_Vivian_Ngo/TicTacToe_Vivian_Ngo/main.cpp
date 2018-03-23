@@ -16,6 +16,7 @@
 #include <iostream>
 #include <conio.h>
 #include <time.h>
+#include "vld.h"
 
 using namespace std;
 
@@ -25,8 +26,8 @@ int main()
 	srand((unsigned)time(NULL));
 
 	CTicTacToe game;
-
-	game.StartUp();
+	game.PlayGame('1', true, false);
+	//game.StartUp();
 
 	return(0);
 }

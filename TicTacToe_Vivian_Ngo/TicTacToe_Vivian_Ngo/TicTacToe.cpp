@@ -16,24 +16,7 @@
 #include <conio.h>
 #include <iostream>
 
-
 using namespace std;
-
-////Initialise new tictactoe board
-//char CTicTacToe::board[3][3] =	
-//{
-//	{ ' ', ' ', ' ' },
-//	{ ' ', ' ', ' ' },
-//	{ ' ', ' ', ' ' }
-//};
-//
-////Initialise new winnerBoard (used to check whether to print 3 in a row in colour or not)
-//bool CTicTacToe::winnerBoard[3][3] =
-//{
-//	{ false, false, false },
-//	{ false, false, false },
-//	{ false, false, false }
-//};
 
 /***********************
 * TicTacToe Destructor
@@ -397,8 +380,11 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 					col = ChooseOption("     Pick a valid column (1, 2, 3): ", 3);
 
 					//If position is valid, end loop
-					if (board->CheckPiece(row - 49, col - 49) == ' ')
+					if (board->CheckPiece(row - 49, col - 49, ' '))
 					{
+						row -= 49;
+						col -= 49;
+
 						break;
 					}
 					//Otherwise, repeat while loop
@@ -419,40 +405,55 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 					while (true)
 					{
 						//Easy random computer position generator
-						int compRow = (rand() % 3 + 1);
-						row = '0' + compRow;
+						int* depth = 0;
+						MiniMax(currentPlayer, *depth);
 
-						int compCol = (rand() % 3 + 1);
-						col = '0' + compCol;
+							row -= 49;
+							col -= 49;
+						//Easy random computer position generator
+						//int compRow = (rand() % 3 + 1);
+						//row = '0' + compRow;
 
-						if (board->CheckPiece(row - 49, col - 49) == ' ') //If the position is valid, proceed with sleep
-						{
-							cout << "     Computer " << currentPlayer << " is making their move: ";
-							Sleep(500);
-							cout << ". ";
-							Sleep(500);
-							cout << ". ";
-							Sleep(500);
-							cout << ". ";
-							Sleep(500);
+						//int compCol = (rand() % 3 + 1);
+						//col = '0' + compCol;
 
-							while (_kbhit()) //Prevents user input while program is sleeping
-								_getch();
+
+						//if (board->CheckPiece(row-49, col-49, ' ')) //If the position is valid, proceed with sleep
+						//{
+							
+						//	cout << "     Computer " << currentPlayer << " is making their move: ";
+
+
+
+
+							/******************* TESTING MINIMAX *************/
+							//Sleep(500);
+							//cout << ". ";
+							//Sleep(500);
+							//cout << ". ";
+							//Sleep(500);
+							//cout << ". ";
+							//Sleep(500);
+
+							//while (_kbhit()) //Prevents user input while program is sleeping
+							//	_getch();
+
+							
+
+
 
 							cout << endl << endl;
 
 							break;
-						}
 					}
 				}
 				else
 				{
 					//Generate better minimaxMinimax
 				}
-				
 			}
 			//Set player piece on board
-			board->Insert(currentPlayer, row - 49, col - 49);
+			board->Insert(currentPlayer, row, col);
 
 			//Check if there is a winner. If there is, break while loop and end round
 			if (CheckGameOver(currentPlayer, isPlayerTurn, isPvP, p1Or2))
@@ -604,4 +605,136 @@ char CTicTacToe::ChangePiece(char checkWithPlayer)
 		}
 	}
 	return newPiece;
+}
+
+/***********************
+* Minimax: Minimax function used to determine the AI for the computer
+* @parameter: currentPlayer - The currentplayer
+* @author: Vivian Ngo
+* @date: 14/03/18
+************************/
+int CTicTacToe::MiniMax(char currentPlayer, int& depth)
+{
+	/*if (MiniMaxScore(currentPlayer, depth) == 10 || MiniMaxScore(currentPlayer, depth) == 0)
+	{
+		return;
+	}*/
+	/*bool boardAvailability[3][3];
+
+	for (unsigned int i = 0; i < 9; ++i)
+	{
+		for (unsigned int j = 0; j < 9; ++j)
+		{
+			boardAvailability[i][j] = (board->CheckPiece(i, j, ' ') ? true : false);
+		}
+	}*/
+
+	for (unsigned int i = 0; i < 9; ++i)
+	{
+		for (unsigned int j = 0; j < 9; ++j)
+		{
+			/*if()
+			move.moveArray[moveCounter] = (board->CheckPiece(i, j, ' ') ? true : false);*/
+		}
+	}
+
+
+	//Check entire board and number it.
+
+		
+}
+
+//int CTicTacToe::MaxSearch(char currentPlayer)
+//{
+//	if (board->CheckForWinner(currentPlayer)) //not sure yet
+//	{
+//		//cout << "Returning minimax with depth: " << depth << " with val: " << bestValue << endl;
+//		return -10;
+//	}
+//
+//	int maxBest = -1000;
+//
+//	for (unsigned int i = 0; i < 3; ++i)
+//	{
+//		for (unsigned int j = 0; j < 3; ++j)
+//		{
+//			if (board->CheckPiece(i, j, ' ') && maxBest != 10)
+//			{
+//				board->Insert(currentPlayer, i, j);
+//				//If the current player is p1 then switch to player 2 else vice versa
+//				int bestMinVal = MiniSearch((currentPlayer == p1Piece) ? p2Piece : p1Piece);
+//				if (maxBest <= bestMinVal)
+//				{
+//					maxBest = bestMinVal;
+//					row = '0' + i;
+//					col = '0' + j;
+//				}
+//				board->Remove(i, j);
+//			}
+//		}
+//	}
+//	return maxBest;
+//}
+//
+//
+//
+//int CTicTacToe::MiniSearch(char currentPlayer)
+//{
+//	if (board->CheckForWinner(currentPlayer)) //not sure yet
+//	{
+//		//cout << "Returning minimax with depth: " << depth << " with val: " << bestValue << endl;
+//		return 10;
+//	}
+//
+//	int minBest = 1000;
+//
+//	for (unsigned int i = 0; i < 3; ++i)
+//	{
+//		for (unsigned int j = 0; j < 3; ++j)
+//		{
+//			if (board->CheckPiece(i, j, ' ') && minBest != -10)
+//			{
+//				board->Insert(currentPlayer, i, j);
+//
+//				//If the current player is p1 then switch to player 2 else vice versa
+//				int bestMinVal = MaxSearch((currentPlayer == p1Piece) ? p2Piece : p1Piece);
+//				if (minBest >= bestMinVal)
+//				{
+//					minBest = bestMinVal;
+//					row = '0' + i;
+//					col = '0' + j;
+//				}
+//				board->Remove(i, j);
+//			}
+//		}
+//	}
+//
+//	return minBest;
+//}
+
+/***********************
+* MiniMaxScore: Determines the minimax score for the AI algorithm
+* @parameter: currentPlayer - The current player
+*https://www.neverstopbuilding.com/blog/2013/12/13/tic-tac-toe-understanding-the-minimax-algorithm13   adskjflkjhfljfhkl
+* @author: Vivian Ngo
+* @date: 14/03/18
+************************/
+int CTicTacToe::MiniMaxScore(char currentPlayer, int& depth)
+{
+	if (board->CheckForWinner(currentPlayer))
+	{
+		return 10 - depth;
+	}
+	else if (board->CheckForWinner((currentPlayer == p1Piece) ? p2Piece : p1Piece))
+	{
+		return depth -10;
+	}
+	else if (board->CheckForDraw())
+	{
+		return 0;
+	}
+	else // more possible moves are valid
+	{
+		return 1;
+	}
 }

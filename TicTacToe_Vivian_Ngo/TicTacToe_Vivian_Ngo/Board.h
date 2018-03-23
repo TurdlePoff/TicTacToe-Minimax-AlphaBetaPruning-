@@ -31,11 +31,14 @@ public:
 	void ResetBoard();								//Reset the game board
 	void ResetWinBoard();							//Reset the winner board
 
-	char CheckPiece(int xPos, int yPos);			//Return a piece from a position on the board
+	bool CheckPiece(int xPos, int yPos, char piece);			//Return a piece from a position on the board
 	bool CheckForDraw();							//Check if there is a draw
 	bool CheckForWinner(char player);				//Check if there is a winner
 
+	//void ConvertRowCol(int& xPos, int& yPos, int val);
+
 private:
+	CControl ctrl;
 	char board[3][3];								//The TicTacToe game board
 	bool winnerBoard[3][3];							//The winner board used to check if there is a 3 in a row
 };
