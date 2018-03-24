@@ -62,7 +62,8 @@ void CBoard::PrintBoard()
 	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
 	CControl::Spc(' ', 5); cout << "       |------------------------|" << endl;
 	CControl::Spc(' ', 5); cout << " R     |        |       |       |" << endl;
-	CControl::Spc(' ', 5); cout << " O  2  |    "; PrintWinningPiece(1, 0);
+	CControl::Spc(' ', 5); cout << " O  2  |    "; 
+	PrintWinningPiece(1, 0);
 					   cout << "   |   "; PrintWinningPiece(1, 1);
 					   cout << "   |   "; PrintWinningPiece(1, 2); cout << "   |" << endl;
 	CControl::Spc(' ', 5); cout << " W     |        |       |       |" << endl;

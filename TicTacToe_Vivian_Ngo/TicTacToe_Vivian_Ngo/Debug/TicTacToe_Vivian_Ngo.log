@@ -1,5 +1,4 @@
-﻿  Board.cpp
-  TicTacToe.cpp
-  main.cpp
-  Generating Code...
+﻿  TicTacToe.cpp
+e:\hw\mds\vs\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\tictactoe.cpp(682): warning C4018: '<': signed/unsigned mismatch
+e:\hw\mds\vs\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\tictactoe.cpp(695): warning C4018: '<': signed/unsigned mismatch
   TicTacToe_Vivian_Ngo.vcxproj -> E:\hw\MDS\VS\Y2Uni\TicTacToe_Vivian_Ngo\Debug\TicTacToe_Vivian_Ngo.exe

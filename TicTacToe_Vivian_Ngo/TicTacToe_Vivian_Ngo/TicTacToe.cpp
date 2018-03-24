@@ -15,7 +15,7 @@
 #include "TicTacToe.h"
 #include <conio.h>
 #include <iostream>
-
+#include <vector>
 using namespace std;
 
 /***********************
@@ -137,7 +137,9 @@ void CTicTacToe::StartUp()
 
 				// Countdown sequence so player can see the options they selected for the match
 				cout << "     Starting game in: ";
-				Sleep(350); cout << "3"; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350);
+
+				Sleep(350); 
+				cout << "3"; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350);
 				cout << "2"; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350);
 				cout << "1"; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350); cout << ".";
 
@@ -222,20 +224,9 @@ char CTicTacToe::ChooseOption(std::string question, int numOptions)
 bool CTicTacToe::CheckGameOver(char player, bool isPlayerTurn, bool isPvP, char p1Or2)
 {
 	bool gameOver = false;
+	board->ResetWinBoard();
 
-	if (board->CheckForDraw()) // If there is a draw, print scores
-	{
-		cout << endl;
-		CControl::ClearScreen(0, 4);
-
-		board->PrintBoard();
-		CControl::SetColour(6);
-		PrintScores(true, isPvP, isPlayerTurn, p1Or2);
-		CControl::SetColour(7);
-
-		gameOver = true;
-	}
-	else if (board->CheckForWinner(player)) // If there is a winner, print scores
+	if (board->CheckForWinner(player)) // If there is a winner, print scores
 	{
 		cout << endl;
 		CControl::ClearScreen(0, 4);
@@ -243,6 +234,18 @@ bool CTicTacToe::CheckGameOver(char player, bool isPlayerTurn, bool isPvP, char 
 		board->PrintBoard();
 		CControl::SetColour(6);
 		PrintScores(false, isPvP, isPlayerTurn, p1Or2);
+		CControl::SetColour(7);
+
+		gameOver = true;
+	}
+	else if (board->CheckForDraw()) // If there is a draw, print scores
+	{
+		cout << endl;
+		CControl::ClearScreen(0, 4);
+
+		board->PrintBoard();
+		CControl::SetColour(6);
+		PrintScores(true, isPvP, isPlayerTurn, p1Or2);
 		CControl::SetColour(7);
 
 		gameOver = true;
@@ -400,57 +403,52 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 				CControl::SetColour(7);
 
 				//Insert minimax here================================++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				if (true)	//easyMode) SET WHEN MINIMAX IMPLEMENTED
+				if (easyMode)	//easyMode) SET WHEN MINIMAX IMPLEMENTED
 				{
 					while (true)
 					{
 						//Easy random computer position generator
-						int* depth = 0;
-						MiniMax(currentPlayer, *depth);
+						int compRow = (rand() % 3 + 1);
+						row = '0' + compRow;
 
+						int compCol = (rand() % 3 + 1);
+						col = '0' + compCol;
+
+
+						if (board->CheckPiece(row - 49, col - 49, ' ')) //If the position is valid, proceed with sleep
+						{
 							row -= 49;
 							col -= 49;
-						//Easy random computer position generator
-						//int compRow = (rand() % 3 + 1);
-						//row = '0' + compRow;
-
-						//int compCol = (rand() % 3 + 1);
-						//col = '0' + compCol;
-
-
-						//if (board->CheckPiece(row-49, col-49, ' ')) //If the position is valid, proceed with sleep
-						//{
-							
-						//	cout << "     Computer " << currentPlayer << " is making their move: ";
-
-
-
-
-							/******************* TESTING MINIMAX *************/
-							//Sleep(500);
-							//cout << ". ";
-							//Sleep(500);
-							//cout << ". ";
-							//Sleep(500);
-							//cout << ". ";
-							//Sleep(500);
-
-							//while (_kbhit()) //Prevents user input while program is sleeping
-							//	_getch();
-
-							
-
-
-
-							cout << endl << endl;
 
 							break;
+						}
 					}
 				}
 				else
 				{
-					//Generate better minimaxMinimax
+					//Generate Minimax AI for hardmode
+					int depth = 0;
+					MiniMax(currentPlayer, p1Or2, &depth);
+
+					row -= 48;
+					col -= 48;
 				}
+				
+				//Make computer delay their move
+				cout << "     Computer " << currentPlayer << " is making their move: ";
+
+				/*Sleep(500);
+				cout << ". ";
+				Sleep(500);
+				cout << ". ";
+				Sleep(500);
+				cout << ". ";
+				Sleep(500);*/
+
+				while (_kbhit()) //Prevents user input while program is sleeping
+					_getch();
+
+				cout << endl << endl;
 			}
 			//Set player piece on board
 			board->Insert(currentPlayer, row, col);
@@ -490,7 +488,7 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 		}
 		else
 		{
-			//Return to main menu by breaking the while loop
+			//Return to main menu by breaking the while loop 468
 			break;
 		}
 	}
@@ -613,128 +611,97 @@ char CTicTacToe::ChangePiece(char checkWithPlayer)
 * @author: Vivian Ngo
 * @date: 14/03/18
 ************************/
-int CTicTacToe::MiniMax(char currentPlayer, int& depth)
+void CTicTacToe::MiniMax(char currentPlayer, char p1Or2, int* depth)
 {
-	/*if (MiniMaxScore(currentPlayer, depth) == 10 || MiniMaxScore(currentPlayer, depth) == 0)
-	{
-		return;
-	}*/
-	/*bool boardAvailability[3][3];
-
-	for (unsigned int i = 0; i < 9; ++i)
-	{
-		for (unsigned int j = 0; j < 9; ++j)
-		{
-			boardAvailability[i][j] = (board->CheckPiece(i, j, ' ') ? true : false);
-		}
-	}*/
-
-	for (unsigned int i = 0; i < 9; ++i)
-	{
-		for (unsigned int j = 0; j < 9; ++j)
-		{
-			/*if()
-			move.moveArray[moveCounter] = (board->CheckPiece(i, j, ' ') ? true : false);*/
-		}
-	}
-
-
-	//Check entire board and number it.
-
-		
+	
+	BestMove move = GetBestMove(currentPlayer, '1', depth);
+	row = ('0' + move.row);
+	col = ('0' + move.col);
 }
-
-//int CTicTacToe::MaxSearch(char currentPlayer)
-//{
-//	if (board->CheckForWinner(currentPlayer)) //not sure yet
-//	{
-//		//cout << "Returning minimax with depth: " << depth << " with val: " << bestValue << endl;
-//		return -10;
-//	}
-//
-//	int maxBest = -1000;
-//
-//	for (unsigned int i = 0; i < 3; ++i)
-//	{
-//		for (unsigned int j = 0; j < 3; ++j)
-//		{
-//			if (board->CheckPiece(i, j, ' ') && maxBest != 10)
-//			{
-//				board->Insert(currentPlayer, i, j);
-//				//If the current player is p1 then switch to player 2 else vice versa
-//				int bestMinVal = MiniSearch((currentPlayer == p1Piece) ? p2Piece : p1Piece);
-//				if (maxBest <= bestMinVal)
-//				{
-//					maxBest = bestMinVal;
-//					row = '0' + i;
-//					col = '0' + j;
-//				}
-//				board->Remove(i, j);
-//			}
-//		}
-//	}
-//	return maxBest;
-//}
-//
-//
-//
-//int CTicTacToe::MiniSearch(char currentPlayer)
-//{
-//	if (board->CheckForWinner(currentPlayer)) //not sure yet
-//	{
-//		//cout << "Returning minimax with depth: " << depth << " with val: " << bestValue << endl;
-//		return 10;
-//	}
-//
-//	int minBest = 1000;
-//
-//	for (unsigned int i = 0; i < 3; ++i)
-//	{
-//		for (unsigned int j = 0; j < 3; ++j)
-//		{
-//			if (board->CheckPiece(i, j, ' ') && minBest != -10)
-//			{
-//				board->Insert(currentPlayer, i, j);
-//
-//				//If the current player is p1 then switch to player 2 else vice versa
-//				int bestMinVal = MaxSearch((currentPlayer == p1Piece) ? p2Piece : p1Piece);
-//				if (minBest >= bestMinVal)
-//				{
-//					minBest = bestMinVal;
-//					row = '0' + i;
-//					col = '0' + j;
-//				}
-//				board->Remove(i, j);
-//			}
-//		}
-//	}
-//
-//	return minBest;
-//}
 
 /***********************
 * MiniMaxScore: Determines the minimax score for the AI algorithm
 * @parameter: currentPlayer - The current player
-*https://www.neverstopbuilding.com/blog/2013/12/13/tic-tac-toe-understanding-the-minimax-algorithm13   adskjflkjhfljfhkl
 * @author: Vivian Ngo
 * @date: 14/03/18
 ************************/
-int CTicTacToe::MiniMaxScore(char currentPlayer, int& depth)
+BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int* depth)
 {
-	if (board->CheckForWinner(currentPlayer))
+
+	if ((p1Or2 == '1' && board->CheckForWinner(p2Piece)) || (p1Or2 == '2' && board->CheckForWinner(p1Piece)))
 	{
-		return 10 - depth;
+		return BestMove(10 - *depth);
 	}
-	else if (board->CheckForWinner((currentPlayer == p1Piece) ? p2Piece : p1Piece))
+	else if (p1Or2 == '1' && board->CheckForWinner(p1Piece) || p1Or2 == '2' && board->CheckForWinner(p2Piece))
 	{
-		return depth -10;
+		return BestMove(*depth - 10);
 	}
 	else if (board->CheckForDraw())
 	{
-		return 0;
+		return BestMove(0);
 	}
-	else // more possible moves are valid
+	
+	std::vector<BestMove> moves;
+
+	for (unsigned int i = 0; i < 3; ++i)
 	{
-		return 1;
+		for (unsigned int j = 0; j < 3; ++j)
+		{
+			//Check if board pos is empty
+			if (board->CheckPiece(i, j, ' '))
+			{
+				BestMove move;
+				move.row = i;
+				move.col = j;
+
+				board->Insert(currentPlayer, i, j); //Insert a default value
+				++*depth;
+				//Switch minimax turn and call the recursion
+				if (currentPlayer == p1Piece)
+				{
+					move.score = GetBestMove(p2Piece, p1Or2, depth).score;
+				}
+				else
+				{
+					move.score = GetBestMove(p1Piece, p1Or2, depth).score;
+				}
+				--*depth;
+				moves.push_back(move); //Add the best move of the branch to the vector list of moves
+
+				board->Remove(i, j); //Remove the temporary variable
+			}
+		}
 	}
+
+	//Determine the best moves for each player
+	int bestMove = 0;
+	if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+	{
+		//Determine the best max value ^ if the currentPlayer is the computer
+		int bestScore = -1000;
+		for (int i = 0; i < moves.size(); ++i)
+		{
+			if (moves[i].score >= bestScore)
+			{
+				bestMove = i;
+				bestScore = moves[i].score;
+			}
+		}
+	}
+	else
+	{
+		//Determine the best min value
+		int bestScore = 1000;
+		for (int i = 0; i < moves.size(); ++i)
+		{
+			if (moves[i].score <= bestScore)
+			{
+				bestMove = i;
+				bestScore = moves[i].score;
+			}
+		}
+	}
+
+	//Return the best score
+	return moves[bestMove];
 }

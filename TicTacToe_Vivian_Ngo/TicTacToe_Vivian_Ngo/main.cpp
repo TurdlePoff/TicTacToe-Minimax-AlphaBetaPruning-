@@ -26,8 +26,8 @@ int main()
 	srand((unsigned)time(NULL));
 
 	CTicTacToe game;
-	game.PlayGame('1', true, false);
-	//game.StartUp();
+	//game.PlayGame('1', true, false);
+	game.StartUp();
 
 	return(0);
 }

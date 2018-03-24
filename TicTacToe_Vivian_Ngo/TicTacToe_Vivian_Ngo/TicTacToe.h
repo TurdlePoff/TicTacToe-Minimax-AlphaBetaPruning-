@@ -21,9 +21,12 @@
 #include <string>
 #include "Board.h"
 
-struct BestMove{
+struct BestMove {
+	BestMove() {};
+	BestMove(int Score) : score(Score) {}
 	int row;
 	int col;
+	int score;
 };
 
 class CTicTacToe
@@ -44,14 +47,13 @@ public:
 	void Customize();						//Allows player to change the game pieces
 	char ChangePiece(char checkWithPlayer);	//Changes board piece with whatever the user inputs
 
-	int MiniMax(char currentPlayer, int& depth);				//MiniMax algorithm used for the computer's AI
+	void MiniMax(char currentPlayer, char p1Or2, int* depth);				//MiniMax algorithm used for the computer's AI
 	int MaxSearch(char currentPlayer);
 	int MiniSearch(char currentPlayer);
-	int MiniMaxScore(char currentPlayer, int& depth);
+	BestMove GetBestMove(char currentPlayer, char p1Or2, int* depth);
 
 private:
 	CBoard* board;
-	BestMove move;
 
 	char p1Piece;					//Player 1's piece
 	char p2Piece;					//Player 2's piece
