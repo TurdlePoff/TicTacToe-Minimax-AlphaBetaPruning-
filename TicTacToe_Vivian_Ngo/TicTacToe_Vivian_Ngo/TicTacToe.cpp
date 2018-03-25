@@ -757,6 +757,6 @@ BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABP
 		}
 	}
 
-	//Return the best score
+	//Return the best score ye
 	return moves[bestMove];
 }
