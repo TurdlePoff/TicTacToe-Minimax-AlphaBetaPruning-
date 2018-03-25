@@ -138,10 +138,10 @@ void CTicTacToe::StartUp()
 				// Countdown sequence so player can see the options they selected for the match
 				cout << "     Starting game in: ";
 
-				Sleep(350); 
+				/*Sleep(350); 
 				cout << "3"; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350);
 				cout << "2"; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350);
-				cout << "1"; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350); cout << ".";
+				cout << "1"; Sleep(350); cout << "."; Sleep(350); cout << "."; Sleep(350); cout << ".";*/
 
 				while (_kbhit()) //Prevents user input while program is sleeping
 					_getch();
@@ -353,6 +353,9 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 		bool isPlayerTurn = ((p1Or2 == '1') ? true : false);	//Set true if player chose to go first
 		char currentPlayer = p1Piece;							//Set the current player's piece to p1Piece 
 
+		//Allow computer to choose a random position if they play first on hard mode
+		bool compIsP1 = ((p1Or2 == '2' && !easyMode) ? true : false); 
+
 		board->ResetBoard();
 		board->ResetWinBoard();
 
@@ -403,7 +406,7 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 				CControl::SetColour(7);
 
 				//Insert minimax here================================++++++++++++++++++++++++++++++++++++++++++++++++++++++
-				if (easyMode)	//easyMode) SET WHEN MINIMAX IMPLEMENTED
+				if (easyMode || compIsP1)	//easyMode) SET WHEN MINIMAX IMPLEMENTED
 				{
 					while (true)
 					{
@@ -423,12 +426,17 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 							break;
 						}
 					}
+					compIsP1 = false;
 				}
 				else
 				{
 					//Generate Minimax AI for hardmode
 					int depth = 0;
-					MiniMax(currentPlayer, p1Or2, &depth);
+
+					ABPruning ab = {1000, -1000};
+					ab.alpha = -1000;
+					ab.beta = 1000;
+					MiniMax(currentPlayer, p1Or2, depth, ab);
 
 					row -= 48;
 					col -= 48;
@@ -611,10 +619,10 @@ char CTicTacToe::ChangePiece(char checkWithPlayer)
 * @author: Vivian Ngo
 * @date: 14/03/18
 ************************/
-void CTicTacToe::MiniMax(char currentPlayer, char p1Or2, int* depth)
+void CTicTacToe::MiniMax(char currentPlayer, char p1Or2, int& depth, ABPruning& ab)
 {
 	
-	BestMove move = GetBestMove(currentPlayer, '1', depth);
+	BestMove move = GetBestMove(currentPlayer, '1', depth, ab);
 	row = ('0' + move.row);
 	col = ('0' + move.col);
 }
@@ -625,16 +633,16 @@ void CTicTacToe::MiniMax(char currentPlayer, char p1Or2, int* depth)
 * @author: Vivian Ngo
 * @date: 14/03/18
 ************************/
-BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int* depth)
+BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABPruning& ab)
 {
 
 	if ((p1Or2 == '1' && board->CheckForWinner(p2Piece)) || (p1Or2 == '2' && board->CheckForWinner(p1Piece)))
 	{
-		return BestMove(10 - *depth);
+		return BestMove(10 - depth);
 	}
 	else if (p1Or2 == '1' && board->CheckForWinner(p1Piece) || p1Or2 == '2' && board->CheckForWinner(p2Piece))
 	{
-		return BestMove(*depth - 10);
+		return BestMove(depth - 10);
 	}
 	else if (board->CheckForDraw())
 	{
@@ -642,9 +650,13 @@ BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int* depth)
 	}
 	
 	std::vector<BestMove> moves;
-
+	bool abBreak = false;
 	for (unsigned int i = 0; i < 3; ++i)
 	{
+		if (abBreak)
+		{
+			break;
+		}
 		for (unsigned int j = 0; j < 3; ++j)
 		{
 			//Check if board pos is empty
@@ -655,17 +667,60 @@ BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int* depth)
 				move.col = j;
 
 				board->Insert(currentPlayer, i, j); //Insert a default value
-				++*depth;
+				++depth;
 				//Switch minimax turn and call the recursion
-				if (currentPlayer == p1Piece)
-				{
-					move.score = GetBestMove(p2Piece, p1Or2, depth).score;
-				}
-				else
-				{
-					move.score = GetBestMove(p1Piece, p1Or2, depth).score;
-				}
-				--*depth;
+				/*if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+				{*/
+					if (ab.alpha <= ab.beta)
+					{
+						
+						if (currentPlayer == p1Piece)
+						{
+							move.score = GetBestMove(p2Piece, p1Or2, depth, ab).score;
+						}
+						else
+						{
+							move.score = GetBestMove(p1Piece, p1Or2, depth, ab).score;
+						}
+
+						if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+						{
+							ab.alpha = move.score;
+						}
+						else
+						{
+							ab.beta = move.score;
+						}
+
+						/*if (ab.beta >= move.score)
+						{
+							ab.beta = move.score;
+						}*/
+						
+					}
+					else
+					{
+						if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+						{
+							//If a min value of this branch has been reached
+							ab.beta = ab.alpha;
+							ab.alpha = -1000;
+						}
+						else
+						{
+							//If a max value of this branch has been reached
+							ab.alpha = ab.beta;
+							ab.beta = 1000;
+						}
+
+						//Skip the rest of the branches and go straight to node evaluation
+						abBreak = true;
+						--depth;
+						board->Remove(i, j); //Remove the temporary variable
+						break;
+					}
+				
+				--depth;
 				moves.push_back(move); //Add the best move of the branch to the vector list of moves
 
 				board->Remove(i, j); //Remove the temporary variable
