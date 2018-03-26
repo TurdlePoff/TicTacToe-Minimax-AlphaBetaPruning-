@@ -57,7 +57,7 @@ public:
 
 private:
 	CBoard* board;
-
+	
 	char p1Piece;					//Player 1's piece
 	char p2Piece;					//Player 2's piece
 	char row;						//Row input for the board

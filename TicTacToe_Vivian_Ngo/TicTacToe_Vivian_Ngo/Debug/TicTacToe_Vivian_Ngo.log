@@ -1,2 +1,4 @@
 ﻿  TicTacToe.cpp
+d:\users\vivian.ngo7572\desktop\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\tictactoe.cpp(752): warning C4018: '<': signed/unsigned mismatch
+d:\users\vivian.ngo7572\desktop\y2uni\tictactoe_vivian_ngo\tictactoe_vivian_ngo\tictactoe.cpp(765): warning C4018: '<': signed/unsigned mismatch
   TicTacToe_Vivian_Ngo.vcxproj -> D:\Users\vivian.ngo7572\Desktop\Y2Uni\TicTacToe_Vivian_Ngo\Debug\TicTacToe_Vivian_Ngo.exe

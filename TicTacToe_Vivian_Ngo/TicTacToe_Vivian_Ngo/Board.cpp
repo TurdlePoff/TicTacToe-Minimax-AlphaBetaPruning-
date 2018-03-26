@@ -60,14 +60,14 @@ void CBoard::PrintBoard()
 					   cout << "   |   "; PrintWinningPiece(0, 1);
 					   cout << "   |   "; PrintWinningPiece(0, 2); cout << "   |" << endl;
 	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	CControl::Spc(' ', 5); cout << "       |------------------------|" << endl;
+	CControl::Spc(' ', 5); cout << "       |--------+-------+-------|" << endl;
 	CControl::Spc(' ', 5); cout << " R     |        |       |       |" << endl;
 	CControl::Spc(' ', 5); cout << " O  2  |    "; 
 	PrintWinningPiece(1, 0);
 					   cout << "   |   "; PrintWinningPiece(1, 1);
 					   cout << "   |   "; PrintWinningPiece(1, 2); cout << "   |" << endl;
 	CControl::Spc(' ', 5); cout << " W     |        |       |       |" << endl;
-	CControl::Spc(' ', 5); cout << "       |------------------------|" << endl;
+	CControl::Spc(' ', 5); cout << "       |--------+-------+-------|" << endl;
 	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
 	CControl::Spc(' ', 5); cout << "    3  |    "; PrintWinningPiece(2, 0);
 					   cout << "   |   "; PrintWinningPiece(2, 1);
@@ -127,9 +127,9 @@ void CBoard::Remove(int xPos, int yPos)
 ************************/
 void CBoard::ResetBoard()
 {
-	for (int i = 0; i < 3; ++i)
+	for (unsigned int i = 0; i < 3; ++i)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (unsigned int j = 0; j < 3; ++j)
 		{
 			board[i][j] = ' '; //Change every piece to a blank piece
 		}
@@ -143,9 +143,9 @@ void CBoard::ResetBoard()
 ************************/
 void CBoard::ResetWinBoard()
 {
-	for (int i = 0; i < 3; ++i)
+	for (unsigned int i = 0; i < 3; ++i)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (unsigned int j = 0; j < 3; ++j)
 		{
 			winnerBoard[i][j] = false; //Change every value to false
 		}
@@ -175,9 +175,9 @@ bool CBoard::CheckPiece(int xPos, int yPos, char piece)
 bool CBoard::CheckForDraw()
 {
 	bool boardIsFull = true;
-	for (int i = 0; i < 3; ++i)
+	for (unsigned int i = 0; i < 3; ++i)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (unsigned int j = 0; j < 3; ++j)
 		{
 			if(board[i][j] == ' ')
 				boardIsFull = false; //If there is an empty space the board is not full

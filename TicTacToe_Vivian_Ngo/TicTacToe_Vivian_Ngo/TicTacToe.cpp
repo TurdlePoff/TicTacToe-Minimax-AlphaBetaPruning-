@@ -16,8 +16,9 @@
 #include <conio.h>
 #include <iostream>
 #include <vector>
-using namespace std;
 
+using namespace std;
+int check = 0;
 /***********************
 * TicTacToe Destructor
 * @author: Vivian Ngo
@@ -36,7 +37,14 @@ CTicTacToe::CTicTacToe()
 	HWND hwnd = GetConsoleWindow();
 	if (hwnd != NULL)
 	{				 //  position	 size
-		MoveWindow(hwnd, 342, 50, 700, 600, TRUE);  //Set console position to center
+		RECT rect;
+		int width, height;
+		if (GetWindowRect(hwnd, &rect))
+		{
+			width = rect.right - rect.left;
+			height = rect.bottom - rect.top;
+		}
+		MoveWindow(hwnd, width/2, height/2, 700, 800, TRUE);  //Set console position to center
 	}
 }
 
@@ -76,9 +84,11 @@ void CTicTacToe::Title()
 ************************/
 void CTicTacToe::StartUp()
 {
-	Title(); //Print title that will last for the entire duration of the game until exited
 	while (!gameEnded)
 	{
+		system("CLS");
+		Title(); //Print title that will last for the entire duration of the game until exited
+
 		CControl::ClearScreen(0, 4);
 		cout << " =================================================" << endl;
 		cout << " ||                  Tic Tac Toe                ||" << endl;
@@ -229,7 +239,7 @@ bool CTicTacToe::CheckGameOver(char player, bool isPlayerTurn, bool isPvP, char 
 	if (board->CheckForWinner(player)) // If there is a winner, print scores
 	{
 		cout << endl;
-		CControl::ClearScreen(0, 4);
+		CControl::ClearScreen(0, 7);
 
 		board->PrintBoard();
 		CControl::SetColour(6);
@@ -241,7 +251,7 @@ bool CTicTacToe::CheckGameOver(char player, bool isPlayerTurn, bool isPvP, char 
 	else if (board->CheckForDraw()) // If there is a draw, print scores
 	{
 		cout << endl;
-		CControl::ClearScreen(0, 4);
+		CControl::ClearScreen(0, 7);
 
 		board->PrintBoard();
 		CControl::SetColour(6);
@@ -361,7 +371,7 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 
 		while (true)			//While loop for a single game session
 		{
-			CControl::ClearScreen(0, 4);
+			CControl::ClearScreen(0, 7);
 			board->PrintBoard();		//Print current board status
 
 			row = 0;			//row to be picked
@@ -406,45 +416,44 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 				cout << " =================================================" << endl << endl;
 				CControl::SetColour(7);
 
-				if (easyMode || hardTurnCounter < 2)	//easyMode) SET WHEN MINIMAX IMPLEMENTED
+				if (easyMode || (hardTurnCounter < 2 && !easyMode))	//easyMode) SET WHEN MINIMAX IMPLEMENTED
 				{
-					//To make the game not look like an AI
-					if (hardTurnCounter == 1) //RANDOMIZE the computers first turn IF in hard mode and player starts 1st
+					////To make the game not look like an AI
+					if (hardTurnCounter == 2 && board->CheckPiece(1, 1, (p1Or2 == '1' ? p1Piece : p2Piece)))
 					{
 						//Choose one of the corner pieces if the player chose to place their piece in the middle position
-						if (board->CheckPiece(1, 1, ((p1Or2 == '1') ? p1Piece : p2Piece)))
+
+						int compCorner = (rand() % 4 + 1);
+						switch (compCorner)
 						{
-							int compCorner = (rand() % 4 + 1);
-							switch (compCorner)
+							case 1:
 							{
-								case 1:
-								{
-									row = ('0' + 1) - 49;
-									col = ('0' + 1) - 49;
-									break;
-								}
-								case 2:
-								{
-									row = ('0' + 1) - 49;
-									col = ('0' + 3) - 49;
-									break;
-								}
-								case 3:
-								{
-									row = ('0' + 3) - 49;
-									col = ('0' + 1) - 49;
-									break;
-								}
-								case 4:
-								{
-									row = ('0' + 3) - 49;
-									col = ('0' + 3) - 49;
-									break;
-								}
+								row = ('0' + 1) - 49;
+								col = ('0' + 1) - 49;
+								break;
+							}
+							case 2:
+							{
+								row = ('0' + 1) - 49;
+								col = ('0' + 3) - 49;
+								break;
+							}
+							case 3:
+							{
+								row = ('0' + 3) - 49;
+								col = ('0' + 1) - 49;
+								break;
+							}
+							case 4:
+							{
+								row = ('0' + 3) - 49;
+								col = ('0' + 3) - 49;
+								break;
 							}
 						}
+						
 					}
-					else //Compute a completely random position for the computer
+					else if(hardTurnCounter == 1 || easyMode) //Compute a completely random position for the computer
 					{
 						while (true)
 						{
@@ -465,9 +474,6 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 							}
 						}
 					}
-					
-					compIsP1 = false;
-					++hardTurnCounter;
 				}
 				else
 				{
@@ -477,6 +483,7 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 					MiniMax(currentPlayer, p1Or2, depth);
 				}
 				
+				++hardTurnCounter;
 				//Make computer delay their move
 				cout << "     Computer " << currentPlayer << " is making their move: ";
 
@@ -517,15 +524,17 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 		cout << "     Play again?" << endl << endl;
 		cout << "         1) Yes" << endl;
 		cout << "         2) No" << endl << endl;
+		cout << check << endl;
 		cout << "     Please select an option: ";
 
 		//Allows player to choose whether to play again or not
 		if (ChooseOption("     Pick a valid option (1, 2): ", 2) == '1')
 		{
 			CControl::ClearScreen(0, 4);
+
 			CControl::SetColour(6);
 			cout << " =================================================" << endl;
-			cout << "                 STARTING NEW GAME " << endl;
+			cout << "    " << ((easyMode == true) ? "[Easy]" : "[Hard]") << " You are player " << ((p1Or2 == '1') ? '1' : '2') << " with the '" << p1Piece << "' piece." << endl;
 			cout << " =================================================" << endl << endl;
 			CControl::SetColour(7);
 		}
@@ -660,11 +669,20 @@ void CTicTacToe::MiniMax(char currentPlayer, char p1Or2, int& depth)
 	ABPruning ab = { 1000, -1000 };
 	ab.alpha = -1000;
 	ab.beta = 1000;
-	BestMove move = GetBestMove(currentPlayer, '1', depth, ab);
+	BestMove move;
+	if (p1Or2 == '1')
+	{
+		move = GetBestMove(currentPlayer, '2', depth, ab);
+	}
+	else
+	{
+		move = GetBestMove(currentPlayer, '1', depth, ab);
+	}
+	//BestMove move = GetBestMove(currentPlayer, '1', depth);
+
 	row = ('0' + move.row) - 48;
 	col = ('0' + move.col) - 48;
 }
-
 
 /***********************
 * MiniMaxScore: Determines the minimax score for the AI algorithm
@@ -674,7 +692,7 @@ void CTicTacToe::MiniMax(char currentPlayer, char p1Or2, int& depth)
 ************************/
 BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABPruning ab)
 {
-
+	
 	if ((p1Or2 == '1' && board->CheckForWinner(p2Piece)) || (p1Or2 == '2' && board->CheckForWinner(p1Piece)))
 	{
 		return BestMove(10 - depth);
@@ -701,11 +719,6 @@ BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABP
 			//Check if board pos is empty
 			if (board->CheckPiece(i, j, ' '))
 			{
-
-				//Switch minimax turn and call the recursion
-				/*if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
-				{*/
-
 				BestMove move;
 				move.row = i;
 				move.col = j;
@@ -713,128 +726,53 @@ BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABP
 				board->Insert(currentPlayer, i, j); //Insert a default value
 				++depth;
 
-				if (ab.alpha <= ab.beta)
+				//Get best move score
+				if (currentPlayer == p1Piece)
 				{
-					if (currentPlayer == p1Piece)
-					{
-						move.score = GetBestMove(p2Piece, p1Or2, depth, ab).score;
-					}
-					else
-					{
-						move.score = GetBestMove(p1Piece, p1Or2, depth, ab).score;
-					}
+					move.score = GetBestMove(p2Piece, p1Or2, depth, ab).score; //Run best move for player 2
+				}
+				else
+				{
+					move.score = GetBestMove(p1Piece, p1Or2, depth, ab).score;
+				}
 
-					
-					if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+				//If player is max
+				if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+				{
+					if (ab.alpha <= move.score)
 					{
-						if (ab.alpha <= move.score)
-						{
-							ab.alpha = move.score;
-						}
-						else
-						{
-								
-							////If a min value of this branch has been reached
-							//if (ab.alpha <= ab.beta)
-							//{
-							//	ab.beta = ab.alpha;
-							//	ab.alpha = -1000;
-							//	abBreak = true;
-							//	--depth;
-							//	board->Remove(i, j); //Remove the temporary variable
-							//	break;
-							//}
-						}		
-
-						if (ab.alpha >= ab.beta)
-						{
-							--depth;
-							moves.push_back(move);
-							board->Remove(i, j); //Remove the temporary variable
-							break;
-						}
-					}
-					else
-					{
-						if (ab.beta >= move.score)
-						{
-							ab.beta = move.score;
-							/*ab.beta = ab.alpha;*/
-							//ab.alpha = -1000;
-						}
-						else
-						{
-							//If a max value of this branch has been reached
-								
-							//if (ab.alpha <= ab.beta)
-							//{
-							//	ab.alpha = ab.beta;
-							//	ab.beta = 1000;
-							//	abBreak = true;
-							//	--depth;
-							//	board->Remove(i, j); //Remove the temporary variable
-							//	break;
-							//}
-						}
-
-						if (ab.alpha >= ab.beta)
-						{
-							--depth;
-							moves.push_back(move);
-							board->Remove(i, j); //Remove the temporary variable
-							break;
-						}
+						ab.alpha = move.score;
 					}
 				}
-				
-
-				//Skip the rest of the branches and go straight to node evaluation
-
-
-				/*if (ab.beta >= move.score)
+				else
 				{
-				ab.beta = move.score;
-				}*/
+					if (ab.beta >= move.score)
+					{
+						ab.beta = move.score;
+					}
+
+					if (ab.beta <= ab.alpha)
+					{
+						--depth;
+						moves.push_back(move);
+						abBreak = true;
+						board->Remove(i, j); //Remove the temporary variable
+											 /*break;*/
+						return move;
+					}
+				}
 				--depth;
 				moves.push_back(move); //Add the best move of the branch to the vector list of moves
 
 				board->Remove(i, j); //Remove the temporary variable
-									 //}
-									 //else
-									 //{
-									 //	//If player is max
-									 //	if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
-									 //	{
-									 //		//If a min value of this branch has been reached
-									 //		ab.beta = ab.alpha;
-									 //		ab.alpha = -1000;
-									 //	}
-									 //	else
-									 //	{
-									 //		//If a max value of this branch has been reached
-									 //		ab.alpha = ab.beta;
-									 //		ab.beta = 1000;
-									 //	}
-
-									 //	//Skip the rest of the branches and go straight to node evaluation
-									 //	abBreak = true;
-									 //	--depth;
-									 //	board->Remove(i, j); //Remove the temporary variable
-									 //	break;
-									 //}
-
-
 			}
 		}
 	}
 
-	
-
 	//Determine the best moves for each player
 	int bestMove = 0;
 
-	/*if (moves.size() != 0)
-	{*/
+	//If player is Max
 	if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
 	{
 		//Determine the best max value ^ if the currentPlayer is the computer
@@ -848,7 +786,7 @@ BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABP
 			}
 		}
 	}
-	else
+	else //If player is Min
 	{
 		//Determine the best min value
 		int bestScore = 1000;
@@ -863,14 +801,4 @@ BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABP
 	}
 	//Return the best score
 	return moves[bestMove];
-
-	//}
-	//else
-	//{
-	//	//If there are no best moves return negative score
-	//	return BestMove(depth - 10);
-	//}
-	//
-
-
 }
