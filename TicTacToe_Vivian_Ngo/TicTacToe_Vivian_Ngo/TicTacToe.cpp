@@ -364,8 +364,8 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 		char currentPlayer = p1Piece;							//Set the current player's piece to p1Piece 
 
 		//Allow computer to choose a random position if they play first on hard mode
-		bool compIsP1 = ((p1Or2 == '2' && !easyMode) ? true : false); 
-		int hardTurnCounter = ((p1Or2 == '2') ? 0 : 1);
+		bool compIsP2 = ((p1Or2 == '1' && !easyMode) ? true : false); 
+
 		board->ResetBoard();
 		board->ResetWinBoard();
 
@@ -416,13 +416,39 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 				cout << " =================================================" << endl << endl;
 				CControl::SetColour(7);
 
-				if (easyMode || (hardTurnCounter < 2 && !easyMode))	//easyMode) SET WHEN MINIMAX IMPLEMENTED
+				if (easyMode )//|| (hardTurnCounter < 2 && !easyMode))	//easyMode) SET WHEN MINIMAX IMPLEMENTED
 				{
 					////To make the game not look like an AI
-					if (hardTurnCounter == 2 && board->CheckPiece(1, 1, (p1Or2 == '1' ? p1Piece : p2Piece)))
+					if(easyMode) //Compute a completely random position for the computer
+					{
+						while (true)
+						{
+							//Easy random computer position generator
+							int compRow = (rand() % 3 + 1);
+							row = '0' + compRow;
+
+							int compCol = (rand() % 3 + 1);
+							col = '0' + compCol;
+
+
+							if (board->CheckPiece(row - 49, col - 49, ' ')) //If the position is valid, proceed with sleep
+							{
+								row -= 49;
+								col -= 49;
+
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
+					//Generate Minimax AI for hardmode
+					int depth = 0;
+
+					if (compIsP2 && board->CheckPiece(1, 1, (p1Or2 == '1' ? p1Piece : p2Piece)))
 					{
 						//Choose one of the corner pieces if the player chose to place their piece in the middle position
-
 						int compCorner = (rand() % 4 + 1);
 						switch (compCorner)
 						{
@@ -451,39 +477,15 @@ void CTicTacToe::PlayGame(char p1Or2, bool easyMode, bool isPvP)
 								break;
 							}
 						}
-						
 					}
-					else if(hardTurnCounter == 1 || easyMode) //Compute a completely random position for the computer
+					else
 					{
-						while (true)
-						{
-							//Easy random computer position generator
-							int compRow = (rand() % 3 + 1);
-							row = '0' + compRow;
+						MiniMax(currentPlayer, p1Or2, depth);
 
-							int compCol = (rand() % 3 + 1);
-							col = '0' + compCol;
-
-
-							if (board->CheckPiece(row - 49, col - 49, ' ')) //If the position is valid, proceed with sleep
-							{
-								row -= 49;
-								col -= 49;
-
-								break;
-							}
-						}
 					}
-				}
-				else
-				{
-					//Generate Minimax AI for hardmode
-					int depth = 0;
-
-					MiniMax(currentPlayer, p1Or2, depth);
+					compIsP2 = false;
 				}
 				
-				++hardTurnCounter;
 				//Make computer delay their move
 				cout << "     Computer " << currentPlayer << " is making their move: ";
 
@@ -692,18 +694,17 @@ void CTicTacToe::MiniMax(char currentPlayer, char p1Or2, int& depth)
 ************************/
 BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABPruning ab)
 {
-	
 	if ((p1Or2 == '1' && board->CheckForWinner(p2Piece)) || (p1Or2 == '2' && board->CheckForWinner(p1Piece)))
 	{
-		return BestMove(10 - depth);
+		return BestMove(10 - depth); //If best max move
 	}
 	else if (p1Or2 == '1' && board->CheckForWinner(p1Piece) || p1Or2 == '2' && board->CheckForWinner(p2Piece))
 	{
-		return BestMove(depth - 10);
+		return BestMove(depth - 10); //If best min move
 	}
 	else if (board->CheckForDraw())
 	{
-		return BestMove(0);
+		return BestMove(0); //If best move is a draw
 	}
 
 	std::vector<BestMove> moves;
