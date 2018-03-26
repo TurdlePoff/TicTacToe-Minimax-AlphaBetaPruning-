@@ -52,8 +52,8 @@ public:
 	void Customize();						//Allows player to change the game pieces
 	char ChangePiece(char checkWithPlayer);	//Changes board piece with whatever the user inputs
 
-	void MiniMax(char currentPlayer, char p1Or2, int& depth, ABPruning& ab);				//MiniMax algorithm used for the computer's AI
-	BestMove GetBestMove(char currentPlayer, char p1Or2, int& depth, ABPruning& ab);
+	void MiniMax(char currentPlayer, char p1Or2, int& depth);				//MiniMax algorithm used for the computer's AI
+	BestMove GetBestMove(char currentPlayer, char p1Or2, int& depth, ABPruning ab);
 
 private:
 	CBoard* board;

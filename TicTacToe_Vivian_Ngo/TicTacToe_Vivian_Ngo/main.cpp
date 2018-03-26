@@ -16,7 +16,7 @@
 #include <iostream>
 #include <conio.h>
 #include <time.h>
-#include "vld.h"
+//#include "vld.h"
 
 using namespace std;
 

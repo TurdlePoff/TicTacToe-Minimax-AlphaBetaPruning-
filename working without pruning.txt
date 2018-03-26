@@ -1,0 +1,134 @@
+
+/***********************
+* MiniMaxScore: Determines the minimax score for the AI algorithm
+* @parameter: currentPlayer - The current player
+* @author: Vivian Ngo
+* @date: 14/03/18
+************************/
+BestMove CTicTacToe::GetBestMove(char currentPlayer, char p1Or2, int& depth, ABPruning& ab)
+{
+
+	if ((p1Or2 == '1' && board->CheckForWinner(p2Piece)) || (p1Or2 == '2' && board->CheckForWinner(p1Piece)))
+	{
+		return BestMove(10 - depth);
+	}
+	else if (p1Or2 == '1' && board->CheckForWinner(p1Piece) || p1Or2 == '2' && board->CheckForWinner(p2Piece))
+	{
+		return BestMove(depth - 10);
+	}
+	else if (board->CheckForDraw())
+	{
+		return BestMove(0);
+	}
+	
+	std::vector<BestMove> moves;
+	bool abBreak = false;
+	for (unsigned int i = 0; i < 3; ++i)
+	{
+		if (abBreak)
+		{
+			break;
+		}
+		for (unsigned int j = 0; j < 3; ++j)
+		{
+			//Check if board pos is empty
+			if (board->CheckPiece(i, j, ' '))
+			{
+				BestMove move;
+				move.row = i;
+				move.col = j;
+
+				board->Insert(currentPlayer, i, j); //Insert a default value
+				++depth;
+				//Switch minimax turn and call the recursion
+				/*if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+				{*/
+					if (ab.alpha <= ab.beta)
+					{
+						
+						if (currentPlayer == p1Piece)
+						{
+							move.score = GetBestMove(p2Piece, p1Or2, depth, ab).score;
+						}
+						else
+						{
+							move.score = GetBestMove(p1Piece, p1Or2, depth, ab).score;
+						}
+
+						if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+						{
+							ab.alpha = move.score;
+						}
+						else
+						{
+							ab.beta = move.score;
+						}
+
+						/*if (ab.beta >= move.score)
+						{
+							ab.beta = move.score;
+						}*/
+						
+					}
+					else
+					{
+						if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+						{
+							//If a min value of this branch has been reached
+							ab.beta = ab.alpha;
+							ab.alpha = -1000;
+						}
+						else
+						{
+							//If a max value of this branch has been reached
+							ab.alpha = ab.beta;
+							ab.beta = 1000;
+						}
+
+						//Skip the rest of the branches and go straight to node evaluation
+						abBreak = true;
+						--depth;
+						board->Remove(i, j); //Remove the temporary variable
+						break;
+					}
+				
+				--depth;
+				moves.push_back(move); //Add the best move of the branch to the vector list of moves
+
+				board->Remove(i, j); //Remove the temporary variable
+			}
+		}
+	}
+
+	//Determine the best moves for each player
+	int bestMove = 0;
+	if ((p1Or2 == '1' && currentPlayer == p2Piece) || (p1Or2 == '2' && currentPlayer == p1Piece))
+	{
+		//Determine the best max value ^ if the currentPlayer is the computer
+		int bestScore = -1000;
+		for (int i = 0; i < moves.size(); ++i)
+		{
+			if (moves[i].score >= bestScore)
+			{
+				bestMove = i;
+				bestScore = moves[i].score;
+			}
+		}
+	}
+	else
+	{
+		//Determine the best min value
+		int bestScore = 1000;
+		for (int i = 0; i < moves.size(); ++i)
+		{
+			if (moves[i].score <= bestScore)
+			{
+				bestMove = i;
+				bestScore = moves[i].score;
+			}
+		}
+	}
+
+	//Return the best score ye
+	return moves[bestMove];
+}
