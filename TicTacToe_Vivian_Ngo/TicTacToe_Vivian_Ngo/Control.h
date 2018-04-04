@@ -25,10 +25,10 @@
 class CControl
 {
 public:
-	static void Spc(char character, int size);		//Sets specified num spaces with specified character inputted
-	static void ClearScreen(int _iX, int _iY);		//Clears screen from the coordinate input onwards
-	static void GotoXY(int _iX, int _iY);			//Goes to the coordinates specified
-	static void SetColour(WORD colour);				//Sets the colour of text to whatever is specified after the function is called
+	static void Spc(char character, int size);					//Sets specified num spaces with specified character inputted
+	static void ClearScreen(int _iX, int _iY);					//Clears screen from the coordinate input onwards
+	static void GotoXY(int _iX, int _iY);						//Goes to the coordinates specified
+	static void SetColour(WORD colour);							//Sets the colour of text to whatever is specified after the function is called
 	static void PrintCharInColour(char piece, WORD colour);		//Prints a specified character in colour (hardcoded light yellow)
 
 private:

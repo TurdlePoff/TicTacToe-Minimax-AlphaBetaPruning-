@@ -10,7 +10,6 @@
 //					that are used to make the TicTacToe game 
 //					look better and is not necessarilly 'game logic'.
 //
-//
 // Author		: Vivian Ngo
 // Mail			: vivian.ngo7572@mediadesign.school.nz
 //

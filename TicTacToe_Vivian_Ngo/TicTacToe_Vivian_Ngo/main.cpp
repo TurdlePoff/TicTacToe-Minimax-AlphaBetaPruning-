@@ -22,12 +22,14 @@ using namespace std;
 
 int main()
 {
-
 	srand((unsigned)time(NULL));
 
 	CTicTacToe game;
-	//game.PlayGame('1', true, false);
 	game.StartUp();
-
 	return(0);
+	//int depth = 0;
+	//game.MiniMax('X', '1', depth);
+	//game.MiniMax('O', '2', depth);
+	cout << game.count;
+	_getch();
 }

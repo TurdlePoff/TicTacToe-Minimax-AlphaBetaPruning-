@@ -54,25 +54,24 @@ void CBoard::PrintBoard()
 	CControl::Spc(' ', 5); cout << "                 COLUMN" << endl;
 	CControl::Spc(' ', 5); cout << "       " << endl;
 	CControl::Spc(' ', 5); cout << "            1       2       3" << endl;
-	CControl::Spc(' ', 5); cout << "        ________________________" << endl;
-	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	CControl::Spc(' ', 5); cout << "    1  |    "; PrintWinningPiece(0, 0);
+	CControl::Spc(' ', 5); cout << "        _______________________" << endl;
+	CControl::Spc(' ', 5); cout << "       |       |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << "    1  |   "; PrintWinningPiece(0, 0);
 					   cout << "   |   "; PrintWinningPiece(0, 1);
 					   cout << "   |   "; PrintWinningPiece(0, 2); cout << "   |" << endl;
-	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	CControl::Spc(' ', 5); cout << "       |--------+-------+-------|" << endl;
-	CControl::Spc(' ', 5); cout << " R     |        |       |       |" << endl;
-	CControl::Spc(' ', 5); cout << " O  2  |    "; 
-	PrintWinningPiece(1, 0);
+	CControl::Spc(' ', 5); cout << "       |       |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << "       |-------+-------+-------|" << endl;
+	CControl::Spc(' ', 5); cout << " R     |       |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << " O  2  |   ";  PrintWinningPiece(1, 0);
 					   cout << "   |   "; PrintWinningPiece(1, 1);
 					   cout << "   |   "; PrintWinningPiece(1, 2); cout << "   |" << endl;
-	CControl::Spc(' ', 5); cout << " W     |        |       |       |" << endl;
-	CControl::Spc(' ', 5); cout << "       |--------+-------+-------|" << endl;
-	CControl::Spc(' ', 5); cout << "       |        |       |       |" << endl;
-	CControl::Spc(' ', 5); cout << "    3  |    "; PrintWinningPiece(2, 0);
+	CControl::Spc(' ', 5); cout << " W     |       |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << "       |-------+-------+-------|" << endl;
+	CControl::Spc(' ', 5); cout << "       |       |       |       |" << endl;
+	CControl::Spc(' ', 5); cout << "    3  |   "; PrintWinningPiece(2, 0);
 					   cout << "   |   "; PrintWinningPiece(2, 1);
 					   cout << "   |   "; PrintWinningPiece(2, 2); cout << "   |" << endl;
-	CControl::Spc(' ', 5); cout << "       |________|_______|_______|" << endl << endl;
+	CControl::Spc(' ', 5); cout << "       |_______|_______|_______|" << endl << endl;
 }
 
 /***********************

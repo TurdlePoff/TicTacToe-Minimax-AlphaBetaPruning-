@@ -21,17 +21,18 @@
 #include <string>
 #include "Board.h"
 
-struct BestMove {
+struct BestMove {				//BestMove stores row, int and score of the best found move
 	BestMove() {};
-	BestMove(int Score) : score(Score) {}
-	int row;
-	int col;
-	int score;
+	BestMove(int Score)			//BestScore allowing the return of only the score
+		: score(Score) {}
+	int row;					//row of best move
+	int col;					//col of best move
+	int score;					//score of best move
 };
 
-struct ABPruning {
-	int alpha;
-	int beta;
+struct ABPruning {				//ABPruning stores ab values
+	int alpha;					//alpha value
+	int beta;					//beta value
 };
 
 class CTicTacToe
@@ -49,15 +50,16 @@ public:
 
 	void PlayGame(char p1Or2, bool easyMode, bool isPvP);	//Player vs Computer Easy mode
 
-	void Customize();						//Allows player to change the game pieces
-	char ChangePiece(char checkWithPlayer);	//Changes board piece with whatever the user inputs
+	void Customize();	//Allows player to change the game pieces
+	char ChangePiece();	//Changes board piece with whatever the user inputs
 
-	void MiniMax(char currentPlayer, char p1Or2, int& depth);				//MiniMax algorithm used for the computer's AI
+	void MiniMax(char currentPlayer, char p1Or2, int& depth);	//MiniMax algorithm used for the computer's AI
 	BestMove GetBestMove(char currentPlayer, char p1Or2, int& depth, ABPruning ab);
-
+	int count;
 private:
 	CBoard* board;
 	
+
 	char p1Piece;					//Player 1's piece
 	char p2Piece;					//Player 2's piece
 	char row;						//Row input for the board
